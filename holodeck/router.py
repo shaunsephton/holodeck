@@ -1,10 +1,11 @@
 class ShardRouter(object):
     """
-    A router to control/map bitpile.models.Sample shard read/writes.
+    A router to control/map holodeck.models.Sample shard read/writes.
     """
     def allow_syncdb(self, db, model):
         "Make sure the Sample model only apperas on shard dbs."
-        from bitpile.models import Sample
+        # TODO: move this import uptop
+        from holodeck.models import Sample
        
         # TODO: startswith check sucks, improve.
         if db.startswith('shard_'):

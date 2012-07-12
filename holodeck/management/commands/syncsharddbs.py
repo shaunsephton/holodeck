@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = "Create the database tables for bitpile.models.Sample in shards whose tables haven't already been created."
+    help = "Create the database tables for holodeck.models.Sample in shards whose tables haven't already been created."
 
     def handle(self, *args, **options):
         for database_name, database_settings in settings.DATABASES.items():

@@ -1,4 +1,4 @@
-from bitpile.models import Dashboard, LineChartWidget, Metric, Project
+from holodeck.models import Dashboard, LineChartWidget, Metric, Project
 from django.contrib import admin
 
 admin.site.register(Dashboard)

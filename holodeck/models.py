@@ -1,11 +1,11 @@
 from django.db import models
-from bitpile.utils import sample_to_shard_mapper
+from holodeck.utils import sample_to_shard_mapper
 
 
 class Project(models.Model):
     title = models.CharField(max_length=255)
     dashboards = models.ManyToManyField(
-        'bitpile.Dashboard',
+        'holodeck.Dashboard',
         blank=True,
         null=True
     )
@@ -17,7 +17,7 @@ class Project(models.Model):
 class Dashboard(models.Model):
     title = models.CharField(max_length=255)
     widgets = models.ManyToManyField(
-        'bitpile.Widget',
+        'holodeck.Widget',
         blank=True,
         null=True
     )
@@ -32,7 +32,7 @@ class Widget(models.Model):
 
 class LineChartWidget(Widget):
     metrics = models.ManyToManyField(
-        'bitpile.Metric',
+        'holodeck.Metric',
         blank=True,
         null=True
     )
