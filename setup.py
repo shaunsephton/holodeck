@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='bitpile',
+    name='holodeck',
     version='0.0.1',
-    description='Massively scalable datapoint storage app with plugable collectors.',
+    description='Simple/scalable/plugable dashboard system.',
     long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
-    author='Shaun Sephton',
-    author_email='shaun@28lines.com',
-    url='http://github.com/shaunsephton/bitpile',
+    author='Praekelt Foundation',
+    author_email='dev@praekelt.com',
+    url='http://github.com/praekelt/holodeck',
     packages = find_packages(),
     install_requires = [
         'django',
@@ -19,7 +19,6 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Development Status :: 4 - Beta",
         "Operating System :: OS Independent",
-        "Framework :: Django",
         "Intended Audience :: Developers",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
