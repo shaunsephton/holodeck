@@ -15,4 +15,4 @@ def generate_shard_database_settings():
     return dbs
 
 def sample_to_shard_mapper(sample):
-    return sample.bucket_id % settings.LOGICAL_SHARDS
+    return sample.metric_id % settings.LOGICAL_SHARDS
