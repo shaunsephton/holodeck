@@ -1,4 +1,4 @@
-from bitpile.utils import shard_mapper
+from bitpile.utils import generate_shard_database_settings
 
 # Django settings for bitpile project.
 DEBUG = True
@@ -10,7 +10,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-# Setup logical to physical shard mapped dbs.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -21,7 +20,9 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-DATABASES.update(shard_mapper())
+
+# Generate logical to physical shard mapped db settings.
+DATABASES.update(generate_shard_database_settings())
 
 DATABASE_ROUTERS = [
     'bitpile.router.ShardRouter',
@@ -125,12 +126,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
 
     'bitpile',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
