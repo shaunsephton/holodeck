@@ -1,0 +1,115 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="robots" content="NONE,NOARCHIVE">
+
+        <link href="{{ STATIC_URL }}holodeck/styles/global.min.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ STATIC_URL }}holodeck/images/favicon.png" rel="shortcut icon" type="image/png"/>
+
+        <title>{% block title %}Sentry{% endblock %}</title>
+
+        {% if USE_JS_CLIENT %}
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/client.js" %}"></script>
+        <script type="text/javascript">
+        Sentry.client.config({
+            server: '{% url sentry-api-store %}',
+            logger: 'sentry.errors.javascript'
+        })
+        Sentry.client.registerGlobalHandler();
+        </script>
+        {% endif %}
+
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/html5shiv.js"></script>
+        <![endif]-->
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.clippy.min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.flot.min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.animate-colors-min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/global.min.js" %}"></script>
+        <script type="text/javascript">
+        Sentry.config({
+            mediaUrl: '{{ STATIC_URL }}holodeck/',
+            defaultImage: '{{ STATIC_URL }}holodeck/images/sentry.png',
+            popupCss: '{{ STATIC_URL }}holodeck/styles/popup.css'
+        });
+        </script>
+
+        {% block meta %}
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block body %}
+        {% block header %}
+            {% include "holodeck/header.html" %}
+        {% endblock %}
+        <section id="page-header" class="toolbar">
+            {% block page_header %}
+                <ul class="breadcrumb">
+                    <li><a href="{% url holodeck %}">{% trans "Dashboard" %}</a></li>
+                    {% if project %}
+                        <li class="divider">/</li>
+                        <li><a href="{% url sentry project.slug %}">{{ project.name }}</a> <a class="action" href="{% url sentry-manage-project project.slug %}">Edit</a></li>
+                    {% endif %}
+                    {% block breadcrumb %}
+                    {% endblock %}
+                </ul>
+            {% endblock %}
+        </section>
+        <section id="content" class="{% block bodyclass %}with-sidebar{% endblock %}">
+            <div class="container">
+                <div class="content">
+                    {% block content_before %}
+                    {% endblock %}
+                    {% block content %}
+                        <div class="main">
+                            {% block main %}
+                            {% endblock %}
+                        </div>
+
+                        <div class="sidebar">
+                            {% block sidebar %}
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                    {% block content_after %}
+                    {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                {% block footer %}
+                    Sentry | Conjured up by the <a href="http://code.disqus.com">DISQUS</a> team and other noble <a href="https://github.com/dcramer/sentry/contributors">sorcerers</a>. | Sentry is <a href="https://github.com/dcramer/sentry">Open Source Software</a>
+                {% endblock %}
+            </div>
+        </footer>
+        {% endblock %}
+
+        <div class="modal" id="modal" style="display:none">
+          <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3></h3>
+          </div>
+          <div class="modal-body">
+          </div>
+        </div>
+
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/bootstrap.min.js"></script>
+        <script type="text/javascript">
+        $(function(){
+            $('.clippy').clippy({
+                clippy_path: '{{ STATIC_URL }}holodeck/clippy.swf',
+                keep_text: true
+            });
+            $('.tip').tooltip();
+            $('.nav-tabs .active a').tab('show')
+        });
+        </script>
+    </body>
+</html>
