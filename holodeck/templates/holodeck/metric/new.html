@@ -1,0 +1,30 @@
+{% extends "holodeck/layout.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "New Metric" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
+    <li class="divider">/</li>
+    <li><a href="{% url holodeck-new-metric dashboard.pk %}">{% trans "New Metric" %}</a></li>
+{% endblock %}
+
+{% block main %}
+    <section class="body">
+    <p>{% trans "Use this page to create a new metric within Holodeck. Once done you'll be able to configure your client to send samples to it and it will appear on your dashboard." %}</p>
+        <hr>
+        <form class="form-stacked" action="" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>{% trans "Metric Details" %}</legend>
+                {% for field in form %}
+                    {% include "holodeck/partial/_form_field.html" %}
+                {% endfor %}
+            </fieldset>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Dashboards" %} <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        {% for object in object_list %}
+            <li{% if object == dashboard %} class="active"{% endif %}><a href="{% url holodeck-view-dashboard object.pk %}">{{ object.name }}</a></li>
+        {% endfor %}
+        {% if object_list %}<li class="divider"></li>{% endif %}
+        <li><a href="{% url holodeck-new-dashboard %}">{% trans "Create New Dashboard" %} </a></li>
+    </ul>
+</li>

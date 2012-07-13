@@ -1,27 +1,24 @@
 {% extends "holodeck/layout.html" %}
 
-{% load i18n %}
+{% load i18n holodeck_inclusion_tags %}
 
 {% block title %}{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
 
-{% block page_header %}
-    <ul class="breadcrumb">
-        <li><a href="{% url holodeck %}">{% trans "Dashboard" %}</a></li>
-    </ul>
+{% block breadcrumb %}
+    <li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
 {% endblock %}
 
-{% block heading %}
-    {% trans "Account Settings" %}
+{% block page_header %}
+    <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new dashboard" %}</a>
+    {{ block.super }}
 {% endblock %}
 
 {% block main %}
     <section class="body">
-            <div style="height:200px;">
-                <div id="chart" style="height:200px; width:500px;">
-                    <span class="loading">{% trans "Loading widget data..." %}</span>
-                </div>
-            </div>
-        {% if PROJECT_LIST %}
+        {% for metric in metrics %}
+            {% render_metric metric %}
+        {% endfor %}
+        {% if widget1s %}
             <div style="height:200px;">
                 <div id="chart" data-api-url="{% url sentry-api-chart %}">
                     <span class="loading">{% trans "Loading historical data..." %}</span>
@@ -54,43 +51,34 @@
                 <div class="tab-pane active" id="new_24h"><p>Loading ...</p></div>
             </div>
         {% else %}
-            {% if can_create_projects %}
-                {% url sentry-new-project as link %}
-                <div class="alert alert-info">{% blocktrans %}You do not have access to any projects. Would you like to <a href="{{ link }}">create a new project</a>?{% endblocktrans %}</div>
-            {% else %}
-                <div class="alert alert-notice">{% trans "You do not have access to any projects. Ask an administrator to add you as a member." %}</div>
+            {% if not metrics %}
+                {% url holodeck-new-metric dashboard.pk as link %}
+                <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
             {% endif %}
         {% endif %}
     </section>
 {% endblock %}
 
 {% block sidebar %}
-    <h6>{% trans "Projects" %}</h6>
-    {% if PROJECT_LIST %}
+    <h6>{% trans "Metrics" %}</h6>
+    {% if metrics %}
         <ul class="nav nav-tabs nav-stacked" style="margin-bottom:5px">
-            {% for p in PROJECT_LIST|slice:"10" %}
-                <li{% if p == project %} class="active"{% endif %}>
-                    <a class="action" href="{% url sentry-manage-project p.slug %}">Edit</a>
-                    <a href="{% url sentry p.slug %}">{{ p.name }}</a>
+            {% for m in metrics %}
+                <li>
+                    <a class="action" href="{% url holodeck-manage-metric m.pk %}">Edit</a>
+                    <a href="{% url holodeck-manage-metric m.pk %}">{{ m.name }}</a>
                 </li>
             {% endfor %}
         </ul>
-        <div style="text-align:right;margin-bottom:13px;">
-            {% if can_create_projects %}
-                <a href="{% url sentry-new-project %}" class="btn btn-small">{% trans "New project" %}</a>
-            {% endif %}
-            {% if PROJECT_LIST|length > 10 %}
-                <a href="{% url sentry-project-list %}" class="btn btn-small">{% blocktrans with PROJECT_LIST|length as count %}View all <strong>{{ count }}</strong> projects{% endblocktrans %}</a>
-            {% endif %}
-        </div>
     {% else %}
-        <p>{% trans "You are not a part of any projects." %}</p>
-        {% if can_create_projects %}
-            <p><a href="{% url sentry-new-project %}">{% trans "Create a new project" %}</a></p>
-        {% endif %}
+        <p>{% trans "Dashboard doesn't have any metrics." %}</p>
     {% endif %}
+        <div style="text-align:right;margin-bottom:13px;">
+            <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn btn-small">{% trans "New metric" %}</a>
+        </div>
 {% endblock %}
 
+{% comment %}
 {% block content_after %}
     <script type="text/javascript">
     $(document).ready(function() {
@@ -203,4 +191,5 @@
         });
     });
     </script>
-{% endblock %}
+    {% endblock %}
+{% endcomment %}

@@ -14,5 +14,8 @@ def generate_shard_database_settings():
         dbs[shard_name] = shard
     return dbs
 
+def metric_to_shard_mapper(metric):
+    return metric.id % settings.LOGICAL_SHARDS
+
 def sample_to_shard_mapper(sample):
     return sample.metric_id % settings.LOGICAL_SHARDS

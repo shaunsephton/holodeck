@@ -23,9 +23,8 @@ def store(request):
         except Metric.DoesNotExist:
             return HttpResponseNotFound()
 
-        # Get project and validate api_key, otherwise fail with Forbidden.
-        project = metric.project
-        if project.api_key != data['api_key']:
+        # Validate api_key, otherwise fail with Forbidden.
+        if metric.api_key != data['api_key']:
             return HttpResponseForbidden()
 
         timestamp = datetime.strptime(data['timestamp'], '%Y-%m-%d %H:%M:%S')

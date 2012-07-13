@@ -1,17 +1,26 @@
 import uuid
 
 from django.db import models
-from holodeck.utils import sample_to_shard_mapper
+from holodeck.utils import metric_to_shard_mapper, sample_to_shard_mapper
+from django.contrib.auth.models import User
+
+class Dashboard(models.Model):
+    name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User, null=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Project(models.Model):
-    title = models.CharField(max_length=255)
-    dashboards = models.ManyToManyField(
-        'holodeck.Dashboard',
-        blank=True,
-        null=True
+class Metric(models.Model):
+    name = models.CharField(max_length=255)
+    dashboard = models.ForeignKey('holodeck.Dashboard')
+    widget_type = models.CharField(
+        max_length=64,
+        choices=(('line_chart', 'Line Chart'),)
     )
     api_key = models.CharField(max_length=32, unique=True, blank=True, null=True)
+
 
     @classmethod
     def generate_api_key(cls):
@@ -19,43 +28,15 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.api_key:
-            self.api_key = Project.generate_api_key()
-        super(Project, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.title
-
-
-class Dashboard(models.Model):
-    title = models.CharField(max_length=255)
-    widgets = models.ManyToManyField(
-        'holodeck.Widget',
-        blank=True,
-        null=True
-    )
+            self.api_key = Metric.generate_api_key()
+        super(Metric, self).save(*args, **kwargs)
     
     def __unicode__(self):
-        return self.title
+        return self.name
 
-
-class Widget(models.Model):
-    title = models.CharField(max_length=255)
-
-
-class LineChartWidget(Widget):
-    metrics = models.ManyToManyField(
-        'holodeck.Metric',
-        blank=True,
-        null=True
-    )
-
-
-class Metric(models.Model):
-    title = models.CharField(max_length=255)
-    project = models.ForeignKey('holodeck.Project')
-    sample_interval = models.IntegerField(
-        choices=((1, "Every Minute"),)
-    )
+    @property
+    def sample_set(self):
+        return Sample.objects.filter(metric_id=self.id).using('shard_%s' % metric_to_shard_mapper(self))
 
 
 class GoogleAnalyticsUniqueUserMetric(Metric):

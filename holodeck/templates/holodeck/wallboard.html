@@ -1,0 +1,74 @@
+<html>
+  <head>
+        <link href="{{ STATIC_URL }}holodeck/styles/global.min.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      #chart {
+        width : 600px;
+        height: 384px;
+        margin: 8px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/flotr2.min.js"></script>
+    <script type="text/javascript">
+(function basic(container) {
+    var d1 = [
+        [0, 3],
+        [4, 8],
+        [8, 5],
+        [9, 13]
+    ]
+    var d2 = [
+        [0, 1],
+        [4, 10],
+        [8, 15],
+        [9, 12],
+    ]
+    graph = Flotr.draw(container, [d1,d2], {
+        title: "Title",
+        grid: {
+            show: true,
+            backgroundColor: '#f9f9f9',
+            tickColor: '#eeeeee',
+            outlineWidth: 0,
+            labelMargin: 5,
+        },
+        shadowSize: 0,
+        
+        lines: {
+            lineWidth: 2,
+            show: true,
+            fill: true,
+            fillOpacity: 0.25,
+        },
+
+        points: {
+            show: true,
+            lineWidth: 2,
+            hitRadius: 5,
+        },
+
+        mouse: {
+            track: true,
+            lineColor: "black",
+            relative: true,
+            position: "n",
+            sensibility: 10,
+        },
+        colors: ['#3079d0',],
+        yaxis: {
+            min: 0,
+            max: 20
+        },
+
+    });
+})(document.getElementById("chart"));
+    </script>
+  </body>
+</html>

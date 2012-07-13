@@ -9,7 +9,7 @@
         <link href="{{ STATIC_URL }}holodeck/styles/global.min.css" rel="stylesheet" type="text/css"/>
         <link href="{{ STATIC_URL }}holodeck/images/favicon.png" rel="shortcut icon" type="image/png"/>
 
-        <title>{% block title %}Sentry{% endblock %}</title>
+        <title>{% block title %}Holodeck{% endblock %}</title>
 
         {% if USE_JS_CLIENT %}
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/client.js" %}"></script>
@@ -28,6 +28,7 @@
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.js" %}"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.clippy.min.js" %}"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.flot.min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/flotr2.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.animate-colors-min.js" %}"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/global.min.js" %}"></script>
         <script type="text/javascript">
@@ -50,17 +51,19 @@
         <section id="page-header" class="toolbar">
             {% block page_header %}
                 <ul class="breadcrumb">
+                    {% comment %}
                     <li><a href="{% url holodeck %}">{% trans "Dashboard" %}</a></li>
                     {% if project %}
                         <li class="divider">/</li>
                         <li><a href="{% url sentry project.slug %}">{{ project.name }}</a> <a class="action" href="{% url sentry-manage-project project.slug %}">Edit</a></li>
                     {% endif %}
+                    {% endcomment %}
                     {% block breadcrumb %}
                     {% endblock %}
                 </ul>
             {% endblock %}
         </section>
-        <section id="content" class="{% block bodyclass %}with-sidebar{% endblock %}">
+        <section id="content" class="with-sidebar">
             <div class="container">
                 <div class="content">
                     {% block content_before %}
@@ -75,6 +78,7 @@
                             {% block sidebar %}
                             {% endblock %}
                         </div>
+
                     {% endblock %}
                     {% block content_after %}
                     {% endblock %}
@@ -85,7 +89,7 @@
         <footer>
             <div class="container">
                 {% block footer %}
-                    Sentry | Conjured up by the <a href="http://code.disqus.com">DISQUS</a> team and other noble <a href="https://github.com/dcramer/sentry/contributors">sorcerers</a>. | Sentry is <a href="https://github.com/dcramer/sentry">Open Source Software</a>
+                    Holodeck | Projected by the <a href="http://www.praekeltfoundation.org">Praekelt Foundation</a> team and other noble <a href="https://github.com/praekelt/holodeck/contributors">simulators</a>. | Holodeck is <a href="https://github.com/praekelt/holodeck">Open Source Software</a>
                 {% endblock %}
             </div>
         </footer>
