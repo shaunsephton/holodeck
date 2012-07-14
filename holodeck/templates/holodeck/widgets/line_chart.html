@@ -1,0 +1,58 @@
+{% extends 'holodeck/widgets/base.html' %}
+
+{% load i18n %}
+
+{% block widget %}
+
+<div style="height:100%; width:100%;">
+    <div id="chart{{ metric.id }}" style="height: 100%; width: 100%;">
+        <span class="loading">{% trans "Loading historical data..." %}</span>
+    </div>
+</div>
+<script type="text/javascript">
+    (function basic(container) {
+        var samples = [
+            {% for sample in samples %}
+            [ {{ sample.0 }}, {{ sample.1 }}],
+            {% endfor %}
+        ]
+        graph = Flotr.draw(container, [samples], {
+            grid: {
+                tickColor: '#f1f1f1',
+                labelMargin: 5,
+                verticalLines: false,
+                horizontalLines: true,
+                outlineWidth: 0,
+            },
+            shadowSize: 3,
+            lines: {
+                show: true,
+                fill: true,
+                lineWidth: 4,
+                fillOpacity: 0.125,
+            },
+            points: {
+                show: true,
+                lineWidth: 3,
+                hitRadius: 5,
+            },
+            mouse: {
+                track: true,
+                lineColor: "black",
+                relative: true,
+                position: "n",
+                sensibility: 10,
+            },
+            colors: ["#058dc7", "#4da74d", "#edc240", "#cb4b4b"],
+            yaxis: {
+                min: 0,
+                max: {{ y_max }}
+            },
+            xaxis: {
+                mode: "time",
+            },
+        });
+    })(document.getElementById("chart{{ metric.id }}"));
+</script>
+
+{% endblock %}
