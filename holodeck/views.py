@@ -60,34 +60,6 @@ def new_dashboard(request):
 
 @login_required
 def view_dashboard(request, dashboard_id):
-    """
-    result = plugins.first('has_perm', request.user, 'edit_project', project)
-    if result is False and not request.user.has_perm('sentry.can_change_project'):
-        return HttpResponseRedirect(reverse('sentry'))
-
-    team_list = get_team_list(request.user)
-
-    if request.user.has_perm('sentry.can_change_project'):
-        form_cls = EditProjectAdminForm
-    else:
-        form_cls = EditProjectForm
-
-    form = form_cls(request, team_list, request.POST or None, instance=project, initial={
-        'origins': '\n'.join(get_option('sentry:origins', project) or []),
-        'owner': project.owner,
-    })
-
-    if form.is_valid():
-        project = form.save()
-        set_option('sentry:origins', form.cleaned_data.get('origins') or [], project)
-        return HttpResponseRedirect(request.path + '?success=1')
-
-    if not project.team:
-        member_list = []
-    else:
-        member_list = [(tm, tm.user) for tm in project.team.member_set.select_related('user')]
-
-    """
     dashboard = Dashboard.objects.get(id=dashboard_id)
     context = {
         'dashboard': dashboard,
