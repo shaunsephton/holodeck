@@ -1,0 +1,46 @@
+{% extends 'holodeck/widgets/base.html' %}
+
+{% load i18n %}
+
+{% block widget %}
+
+<div id="chart{{ metric.id }}" style="height: 100%; width: 100%;">
+    <span class="loading">{% trans "Loading data..." %}</span>
+</div>
+
+<script type="text/javascript">
+    (function basic_pie(container) {
+        graph = Flotr.draw(container, {{ samples|safe }}, {
+            grid: {
+                verticalLines: false,
+                horizontalLines: false,
+                outlineWidth: 0,
+            },
+            xaxis: {
+                showLabels: false
+            },
+            yaxis: {
+                showLabels: false
+            },
+            pie: {
+                show: true,
+                lineWidth: 2,
+                explode: 4,
+                fillOpacity: 0.65,
+                sizeRatio: 0.85,
+            },
+            legend: {
+                show: true,
+                position: "se",
+                backgroundColor: "#F3F3F3",
+                backgroundOpacity: 0.7,
+                labelBoxBorderColor: "#DDDDDD",
+                margin: 0,
+            },
+            colors: ["#058dc7", "#f36a67", "#90c7a0", "#eba44c", "#fedd74"],
+            shadowSize: 0,
+        });
+    })(document.getElementById("chart{{ metric.id }}"));
+</script>
+
+{% endblock %}
