@@ -1,50 +1,72 @@
-{% load i18n %}
 
-<div style="height:200px;">
-    <div id="chart" style="height:200px; width:100%;">
+{% if metric.widget_type == 'pie_chart' %}
+<div style="height:200px; width: 200px; float: left; background: url('static/holodeck/images/dashboard/toolbar-bg.png') repeat scroll 0 0 #F4F4F4; border: 1px solid #B6B9BD;">
+    <div id="chart{{ metric.id }}" style="height:100%; width: 100%;">
         <span class="loading">{% trans "Loading historical data..." %}</span>
     </div>
 </div>
 <script type="text/javascript">
-    (function basic(container) {
-        var samples = [
-            {% for sample in samples %}
-                [{{ forloop.counter }}, {{ sample.integer_value }}],
-            {% endfor %}
-        ]
-        graph = Flotr.draw(container, [samples], {
-            title: "{{ metric.name }}",
-            grid: {
-                show: true,
-                backgroundColor: '#f9f9f9',
-                tickColor: '#eeeeee',
-                outlineWidth: 0,
-                labelMargin: 5,
-            },
-            shadowSize: 0,
-            lines: {
-                lineWidth: 2,
-                show: true,
-                fill: true,
-                fillOpacity: 0.25,
-            },
-            points: {
-                show: true,
-                lineWidth: 2,
-                hitRadius: 5,
-            },
-            mouse: {
-                track: true,
-                lineColor: "black",
-                relative: true,
-                position: "n",
-                sensibility: 10,
-            },
-            colors: ["#3079d0", "#4da74d", "#edc240", "#cb4b4b"],
-            yaxis: {
-                min: 0,
-                //max: 20
-            },
-        });
-    })(document.getElementById("chart"));
+(function basic_pie(container) {
+    var d1 = [
+        [0, 4]
+    ],
+        d2 = [
+            [0, 3]
+        ],
+        d3 = [
+            [0, 1.03]
+        ],
+        d4 = [
+            [0, 3.5]
+        ],
+        graph;
+    graph = Flotr.draw(container, [{
+        data: d1,
+        label: "Comedy"
+    }, {
+        data: d2,
+        label: "Action"
+    }, {
+        data: d3,
+        label: "Romance",
+    }, {
+        data: d4,
+        label: "Drama"
+    }], {
+        //HtmlText: false,
+        title: "{{ metric.name }}",
+        grid: {
+            verticalLines: false,
+            horizontalLines: false,
+            outlineWidth: 0,
+        },
+        xaxis: {
+            showLabels: false
+        },
+        yaxis: {
+            showLabels: false
+        },
+        pie: {
+            show: true,
+            lineWidth: 2,
+            explode: 0,
+            fillOpacity: 0.9,
+            sizeRatio: 0.65,
+            labelFormatter: function(total, value) {
+                return value;
+            }
+        },
+        //mouse: {
+        //    track: true
+        //},
+        legend: {
+            show: false,
+            //position: "se",
+            //backgroundColor: "#D2E8FF"
+        },
+        colors: ["#3079d0", "#4da74d", "#edc240", "#cb4b4b"],
+        shadowSize: 0,
+    });
+})(document.getElementById("chart{{ metric.id }}"));
 </script>
+{% endif %}
