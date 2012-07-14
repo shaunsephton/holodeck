@@ -63,7 +63,7 @@
                 </ul>
             {% endblock %}
         </section>
-        <section id="content" class="with-sidebar">
+        <section id="content">
             <div class="container">
                 <div class="content">
                     {% block content_before %}
@@ -74,10 +74,12 @@
                             {% endblock %}
                         </div>
 
+                        {% comment %}
                         <div class="sidebar">
                             {% block sidebar %}
                             {% endblock %}
                         </div>
+                        {% endcomment %}
 
                     {% endblock %}
                     {% block content_after %}
