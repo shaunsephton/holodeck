@@ -1,9 +1,11 @@
 import uuid
 
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from holodeck.utils import get_widget_type_choices, load_class_by_string, \
     metric_to_shard_mapper, sample_to_shard_mapper
-from django.contrib.auth.models import User
 
 
 class Dashboard(models.Model):
@@ -59,3 +61,12 @@ class Sample(models.Model):
         self.full_clean()
         kwargs.update({'using': 'shard_%s' % sample_to_shard_mapper(self)})
         super(Sample, self).save(*args, **kwargs)
+
+
+@receiver(post_delete, sender=Metric)
+def metric_post_delete_handler(sender, instance, **kwargs):
+    """
+    Because relation between sample and metric is handled on the application
+    level ensure deletion of samples on metric delete.
+    """
+    instance.sample_set.all().delete()
