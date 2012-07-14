@@ -17,20 +17,21 @@ def store(request):
         data = request.raw_post_data
         data = json.loads(base64.b64decode(data).decode('zlib'))
 
-        # Get the Metric from provided ID, otherwise fail with NotFound.
+        # Get the Metric for provided api_key, otherwise fail with Forbidden.
         try:
-            metric = Metric.objects.get(id=int(data['metric_id']))
+            metric = Metric.objects.get(api_key=data['api_key'])
         except Metric.DoesNotExist:
-            return HttpResponseNotFound()
-
-        # Validate api_key, otherwise fail with Forbidden.
-        if metric.api_key != data['api_key']:
             return HttpResponseForbidden()
 
         timestamp = datetime.strptime(data['timestamp'], '%Y-%m-%d %H:%M:%S')
 
         for sample in data['samples']:
             # TODO: get_or_create or check uniqueness on subset of fields?
-            Sample.objects.create(metric_id=metric.pk, string_value=sample[0], integer_value=sample[1], timestamp=timestamp)
+            Sample.objects.create(
+                metric_id=metric.id,
+                string_value=sample[0],
+                integer_value=sample[1],
+                timestamp=timestamp
+            )
 
     return HttpResponse()
