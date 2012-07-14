@@ -11,12 +11,7 @@
 </div>
 <script type="text/javascript">
     (function basic(container) {
-        var samples = [
-            {% for sample in samples %}
-            [ {{ sample.0 }}, {{ sample.1 }}],
-            {% endfor %}
-        ]
-        graph = Flotr.draw(container, [samples], {
+     graph = Flotr.draw(container, {{ samples }}, {
             grid: {
                 tickColor: '#f1f1f1',
                 labelMargin: 5,
@@ -43,7 +38,7 @@
                 position: "n",
                 sensibility: 10,
             },
-            colors: ["#058dc7", "#4da74d", "#edc240", "#cb4b4b"],
+            colors: ["#058dc7", "#f87774", "#90c7a0", "#eba44c", "#fedd74"],
             yaxis: {
                 min: 0,
                 max: {{ y_max }}
