@@ -1,7 +1,7 @@
 <div class="widget" style="width: {{ width }};">
     <div class="widget-header">
         {{ metric.name }}
-        <a class="action" href="/metrics/1/edit/">Edit</a>
+        <a class="action" href="{% url holodeck-manage-metric metric.id %}">Edit</a>
     </div>
     <div class="widget-body">
         {% block widget %}{% endblock %}
