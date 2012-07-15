@@ -22,7 +22,17 @@ class LineChart(Widget):
     template_name = 'holodeck/widgets/line_chart.html'
 
     def get_context(self, metric):
+        context = {
+            'metric': metric,
+            'width': '600px'
+        }
+
         groups = self.get_groups(metric)
+
+        if not groups:
+            context['no_samples'] = True
+            return context
+
         grouped_samples = []
         group_maxes = []
         sample_count = 20
@@ -36,12 +46,12 @@ class LineChart(Widget):
             group_maxes.append(max([sample[1] for sample in samples]))
         samples = json.dumps([{'label': group[0], 'data': group[1]}
                               for group in grouped_samples])
-        return {
-            'metric': metric,
+
+        context.update({
             'samples': samples,
             'y_max': max(group_maxes) * 1.025,
-            'width': '600px'
-        }
+        })
+        return context
 
 
 class PieChart(Widget):
@@ -49,7 +59,17 @@ class PieChart(Widget):
     template_name = 'holodeck/widgets/pie_chart.html'
 
     def get_context(self, metric):
+        context = {
+            'metric': metric,
+            'width': '300px'
+        }
+
         groups = self.get_groups(metric)
+
+        if not groups:
+            context['no_samples'] = True
+            return context
+
         grouped_samples = []
         for group in groups:
             sample = metric.sample_set.filter(
@@ -59,11 +79,11 @@ class PieChart(Widget):
         samples = json.dumps([{'label': group[0], 'data': group[1]}
                              for group in grouped_samples])
 
-        return {
-            'metric': metric,
+        context.update({
             'samples': samples,
-            'width': '300px'
-        }
+        })
+
+        return context
 
 
 class SampleDeviation(Widget):
@@ -89,8 +109,17 @@ class SampleDeviation(Widget):
 
     def get_context(self, metric):
         from django.db.models import Avg, Max
-        current = metric.sample_set.all().order_by(
-            '-timestamp')[0].integer_value
+        context = {
+            'metric': metric,
+            'width': '300px'
+        }
+
+        try:
+            current = metric.sample_set.all().order_by(
+                '-timestamp')[0].integer_value
+        except IndexError:
+            context['no_samples'] = True
+            return context
         previous = metric.sample_set.all().order_by(
             '-timestamp')[1].integer_value
         average = int(metric.sample_set.all().aggregate(
@@ -98,11 +127,11 @@ class SampleDeviation(Widget):
         peak = int(metric.sample_set.all().aggregate(
             Max('integer_value'))['integer_value__max'])
 
-        return {
+        context.update({
             'current': current,
             'previous': self.gen_deviation(current, previous),
             'average': self.gen_deviation(current, average),
             'peak': self.gen_deviation(current, peak),
-            'metric': metric,
-            'width': '300px'
-        }
+        })
+
+        return context
