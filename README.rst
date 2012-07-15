@@ -3,6 +3,11 @@ Holodeck
 
 Simple & scalable dashboard system.
 
+Demo Screenshot
+---------------
+
+.. image:: https://github.com/downloads/praekelt/holodeck/screenie.png
+
 Getting Started
 ---------------
 Initialize Holodeck from scratch like so::
