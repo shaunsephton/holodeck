@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='holodeck',
     version='0.0.1',
-    description='Simple/scalable/plugable dashboard system.',
+    description='Simple & scalable dashboard system.',
     long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
     author='Praekelt Foundation',
     author_email='dev@praekelt.com',
