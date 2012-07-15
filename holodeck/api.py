@@ -2,7 +2,7 @@ import base64
 from datetime import datetime
 import json
 
-from django.http import HttpResponseForbidden, HttpResponseNotFound, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from holodeck.models import Metric, Sample
 
