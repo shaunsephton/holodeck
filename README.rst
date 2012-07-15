@@ -1,11 +1,10 @@
 Holodeck
 ========
 
-Simple/scalable/plugable dashboard system.
+Simple & scalable dashboard system.
 
 Getting Started
 ---------------
-
 Initialize Holodeck from scratch like so::
 
     $ git clone git@github.com:praekelt/holodeck
@@ -13,3 +12,4 @@ Initialize Holodeck from scratch like so::
     $ virtualenv ve
     $ . ve/bin/activate
     $ python setup.py install
+
