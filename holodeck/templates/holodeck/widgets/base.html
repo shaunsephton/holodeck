@@ -1,9 +1,15 @@
+{% load i18n %}
+
 <div class="widget" style="width: {{ width }};">
     <div class="widget-header">
         {{ metric.name }}
         <a class="action" href="{% url holodeck-manage-metric metric.id %}">Edit</a>
     </div>
     <div class="widget-body">
-        {% block widget %}{% endblock %}
+        {% if no_samples %}
+            <div class="alert alert-warning">{% blocktrans %}This metric does not currently have any samples.{% endblocktrans %}</div>
+        {% else %}
+            {% block widget %}{% endblock %}
+        {% endif %}
     </div>
 </div>
