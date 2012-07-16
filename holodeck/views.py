@@ -1,6 +1,5 @@
 from django.contrib.auth import logout as logout_
 from django.contrib.auth import login as login_
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
@@ -9,14 +8,11 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from holodeck.models import Dashboard, Metric
+from holodeck.decorators import login_required
 
+@login_required
 def holodeck(request):
     return render_to_response('holodeck/dashboard.html', {}, context_instance=RequestContext(request))
-
-
-def wallboard(request):
-    return render_to_response('holodeck/wallboard.html', {}, context_instance=RequestContext(request))
-
 
 @csrf_protect
 def login(request):
