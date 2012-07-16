@@ -21,7 +21,6 @@ urlpatterns = patterns('',
     url(r'^metrics/(?P<metric_id>\d+)/remove/$', views.remove_metric, name='holodeck-remove-metric'),
     
     url(r'^$', views.holodeck, name='holodeck'),
-    url(r'^wallboard/$', views.wallboard, name='wallboard'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/store/$', api.store, name='holodeck-api-store'),
 )
