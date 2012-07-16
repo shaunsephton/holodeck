@@ -18,3 +18,5 @@ PHYSICAL_SHARDS = [
         'PORT': '',
     },
 ]
+
+PUBLIC = False
