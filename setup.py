@@ -14,7 +14,7 @@ setup(
         'south',
     ],
     include_package_data=True,
-    scripts = ['holodeck/bin/holodeck.py'],
+    scripts = ['holodeck/bin/holodeck'],
     classifiers=[
         "Programming Language :: Python",
         "License :: OSI Approved :: BSD License",
