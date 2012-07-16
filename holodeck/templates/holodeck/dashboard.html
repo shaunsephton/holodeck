@@ -1,206 +1,33 @@
 {% extends "holodeck/layout.html" %}
 
-{% load i18n %}
+{% load i18n holodeck_inclusion_tags %}
 
-{% block title %}{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Dashboard Overview" %} | {{ block.super }}{% endblock %}
 
-{% block page_header %}
-    <ul class="breadcrumb">
-        <li><a href="{% url holodeck %}">{% trans "Dashboard" %}</a></li>
-    </ul>
+{% block breadcrumb %}
+    <li><a href="{% url holodeck %}">{% trans "Dashboard Overview" %}</a></li>
 {% endblock %}
 
-{% block heading %}
-    {% trans "Account Settings" %}
+{% block page_header %}
+    <a href="{% url holodeck-new-dashboard %}" class="btn pull-right btn-primary">{% trans "Create a new dashboard" %}</a>
+    {{ block.super }}
 {% endblock %}
 
 {% block main %}
-    <section class="body">
-            <div style="height:200px;">
-                <div id="chart" style="height:200px; width:500px;">
-                    <span class="loading">{% trans "Loading widget data..." %}</span>
-                </div>
-            </div>
-        {% if PROJECT_LIST %}
-            <div style="height:200px;">
-                <div id="chart" data-api-url="{% url sentry-api-chart %}">
-                    <span class="loading">{% trans "Loading historical data..." %}</span>
-                </div>
-            </div>
-            <div class="page-header">
-                <h3 class="pull-left">{% trans "Trends" %}</h3>
-                <ul class="nav nav-pills nav-small">
-                    <li><a href="#top_15m" data-toggle="ajtab" data-uri="{% url sentry-api-groups-trends %}?minutes=15&amp;limit=5">{% trans "15 minutes" %}</a></li>
-                    <li><a href="#top_60m" data-toggle="ajtab" data-uri="{% url sentry-api-groups-trends %}?minutes=60&amp;limit=5">{% trans "60 minutes" %}</a></li>
-                    <li class="active"><a href="#top_24h" data-toggle="ajtab" data-uri="{% url sentry-api-groups-trends %}?minutes=1440&amp;limit=5">{% trans "24 hours" %}</a></li>
-                </ul>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane" id="top_15m"></div>
-                <div class="tab-pane" id="top_60m"></div>
-                <div class="tab-pane active" id="top_24h"><p>Loading ...</p></div>
-            </div>
-            <div class="page-header">
-                <h3 class="pull-left">{% trans "New Events" %}</h3>
-                <ul class="nav nav-pills nav-small">
-                    <li><a href="#new_15m" data-toggle="ajtab" data-uri="{% url sentry-api-groups-new %}?minutes=15&amp;limit=5">{% trans "15 minutes" %}</a></li>
-                    <li><a href="#new_60m" data-toggle="ajtab" data-uri="{% url sentry-api-groups-new %}?minutes=60&amp;limit=5">{% trans "60 minutes" %}</a></li>
-                    <li class="active"><a href="#new_24h" data-toggle="ajtab" data-uri="{% url sentry-api-groups-new %}?minutes=1440&amp;limit=5">{% trans "24 hours" %}</a></li>
-                </ul>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane" id="new_15m"></div>
-                <div class="tab-pane" id="new_60m"></div>
-                <div class="tab-pane active" id="new_24h"><p>Loading ...</p></div>
-            </div>
-        {% else %}
-            {% if can_create_projects %}
-                {% url sentry-new-project as link %}
-                <div class="alert alert-info">{% blocktrans %}You do not have access to any projects. Would you like to <a href="{{ link }}">create a new project</a>?{% endblocktrans %}</div>
-            {% else %}
-                <div class="alert alert-notice">{% trans "You do not have access to any projects. Ask an administrator to add you as a member." %}</div>
-            {% endif %}
-        {% endif %}
-    </section>
-{% endblock %}
-
-{% block sidebar %}
-    <h6>{% trans "Projects" %}</h6>
-    {% if PROJECT_LIST %}
-        <ul class="nav nav-tabs nav-stacked" style="margin-bottom:5px">
-            {% for p in PROJECT_LIST|slice:"10" %}
-                <li{% if p == project %} class="active"{% endif %}>
-                    <a class="action" href="{% url sentry-manage-project p.slug %}">Edit</a>
-                    <a href="{% url sentry p.slug %}">{{ p.name }}</a>
-                </li>
+    {% if dashboard_list %}
+        <ul class="events" id="event_list">
+            {% for dashboard in dashboard_list %}
+                {% dashboard_list_summary dashboard %}
             {% endfor %}
         </ul>
-        <div style="text-align:right;margin-bottom:13px;">
-            {% if can_create_projects %}
-                <a href="{% url sentry-new-project %}" class="btn btn-small">{% trans "New project" %}</a>
-            {% endif %}
-            {% if PROJECT_LIST|length > 10 %}
-                <a href="{% url sentry-project-list %}" class="btn btn-small">{% blocktrans with PROJECT_LIST|length as count %}View all <strong>{{ count }}</strong> projects{% endblocktrans %}</a>
-            {% endif %}
-        </div>
     {% else %}
-        <p>{% trans "You are not a part of any projects." %}</p>
-        {% if can_create_projects %}
-            <p><a href="{% url sentry-new-project %}">{% trans "Create a new project" %}</a></p>
-        {% endif %}
+        <ul class="events" id="event_list">
+            <li class="empty-result" id="no_messages">
+                <div class="alert alert-block alert-notice">
+                    {% url holodeck-new-dashboard as link %}
+                    <p>{% blocktrans %}This Holodeck does not contain any dashboards. Would you like to <a href="{{ link }}">create a new dashboard now</a>?{% endblocktrans %}</p>
+                </div>
+            </li>
+        </ul>
     {% endif %}
-{% endblock %}
-
-{% block content_after %}
-    <script type="text/javascript">
-    $(document).ready(function() {
-        //Sentry.charts.render('#chart');
-(function basic(container) {
-    var d1 = [
-        [0, 3],
-        [4, 8],
-        [8, 5],
-        [9, 13]
-    ]
-    var d2 = [
-        [0, 1],
-        [4, 10],
-        [8, 15],
-        [9, 12],
-    ]
-    var d3 = [
-        [0, 4],
-        [4, 6],
-        [8, 10],
-        [9, 12],
-    ]
-    var d4 = [
-        [0, 16],
-        [4, 10],
-        [8, 15],
-        [9, 8],
-    ]
-    graph = Flotr.draw(container, [d1,d2,d3,d4], {
-        title: "Title",
-        grid: {
-            show: true,
-            backgroundColor: '#f9f9f9',
-            tickColor: '#eeeeee',
-            outlineWidth: 0,
-            labelMargin: 5,
-        },
-        shadowSize: 0,
-        
-        lines: {
-            lineWidth: 2,
-            show: true,
-            fill: true,
-            fillOpacity: 0.25,
-        },
-
-        points: {
-            show: true,
-            lineWidth: 2,
-            hitRadius: 5,
-        },
-
-        mouse: {
-            track: true,
-            lineColor: "black",
-            relative: true,
-            position: "n",
-            sensibility: 10,
-        },
-        colors: ["#3079d0", "#4da74d", "#edc240", "#cb4b4b"],
-        yaxis: {
-            min: 0,
-            max: 20
-        },
-
-    });
-})(document.getElementById("chart"));
-
-        //load content for first tab and initialize
-        $('a[data-toggle=ajtab]').each(function(){
-            var $el = $(this);
-
-            $el.bind('click', function(e) {
-                var $el = $(e.target);
-                var uri = $el.attr('data-uri');
-                if (!uri) {
-                    return;
-                }
-                var $tab = $(this);
-                var $cont = $($tab.attr('href'));
-                var $parent = $cont.parent();
-
-                $parent.css('opacity', .6)
-                e.preventDefault()
-
-                // load content for selected tab
-                $.ajax({
-                    url: uri,
-                    dataType: 'json',
-                    success: function(data){
-                        if (data.length) {
-                            var $ul = $('<ul class="events"></ul>');
-                            $.each(data, function(_, group){
-                                $ul.append($(group.html));
-                            });
-                            $cont.html($ul);
-                        } else {
-                            $cont.html('<p>{% trans "No unresolved events are listed in the time period selected." %}</p>');
-                        }
-                        $parent.css('opacity', 1)
-                        $tab.tab('show');
-                    }
-                });
-            });
-    
-            if ($el.parent().hasClass('active')) {
-                $el.click();
-            }
-        });
-    });
-    </script>
 {% endblock %}
