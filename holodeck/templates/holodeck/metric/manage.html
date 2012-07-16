@@ -1,0 +1,52 @@
+{% extends "holodeck/layout.html" %}
+
+{% load i18n %}
+
+{% block title %}{% blocktrans with metric.name as name %}Manage Metric: {{ name }}{% endblocktrans %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
+    <li class="divider">/</li>
+    <li><a href="{% url holodeck-manage-metric metric.id %}">{{ metric.name }}</a></li>
+{% endblock %}
+
+{% block page_header %}
+    <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
+    {{ block.super }}
+{% endblock %}
+
+{% block main %}
+    <section class="body">
+        {% block inner %}
+        <p>{% trans "Here you can edit Metric information and display settings as well as source client configuration info." %}</p>
+            <hr>
+            {% if request.GET.success %}
+                <div class="alert alert-success">{% trans "Changes to your metric were saved successfully." %}</div>
+            {% else %}
+                {% if form.errors %}
+                    <div class="alert alert-error">{% trans "Please correct the errors below." %}</div>
+                {% endif %}
+            {% endif %}
+            <form class="form-stacked" action="" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <div><legend>{% trans "Metric Details" %}</legend></div>
+                    {% for field in form %}
+                        {% if field.name != 'origins' %}
+                            {% include "holodeck/partial/_form_field.html" %}
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                <fieldset id="client-security">
+                    <div><legend>{% trans "Client Security" %}</legend></div>
+                    <p>{% trans "To start sending samples to this metric configure your client with the following API-Key:" %}</p>
+                    <p><code class="clippy">{{ metric.api_key }}</code></p>
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                    <a href="{% url holodeck-remove-metric metric.id %}" class="btn btn-danger">{% trans "Remove Metric" %}</a>
+                </div>
+            </form>
+        {% endblock %}
+    </section>
+{% endblock %}

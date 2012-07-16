@@ -1,14 +1,20 @@
-bitpile
-=======
+Holodeck
+========
 
-Massively scalable datapoint storage app with plugable collectors.
+Simple & scalable dashboard system.
+
+Demo Screenshot
+---------------
+
+.. image:: https://github.com/downloads/praekelt/holodeck/screenie.png
 
 Getting Started
 ---------------
+Initialize Holodeck from scratch like so::
 
-::
-    $ git clone git@github.com:shaunsephton/bitpile
-    $ cd bitpile
+    $ git clone git@github.com:praekelt/holodeck
+    $ cd holodeck
     $ virtualenv ve
     $ . ve/bin/activate
-    $ pip install -r requirements.pip
+    $ python setup.py install
+

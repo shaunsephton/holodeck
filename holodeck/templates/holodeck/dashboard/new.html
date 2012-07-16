@@ -1,0 +1,28 @@
+{% extends "holodeck/layout.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "New Dashboard" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url holodeck-new-dashboard %}">{% trans "New Dashboard" %}</a></li>
+{% endblock %}
+
+{% block main %}
+    <section class="body">
+        <p>{% trans "Use this page to create a new dashboard within Holodeck. Once done, you'll be able to configure its widgets." %}</p>
+        <hr>
+        <form class="form-stacked" action="" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>{% trans "Dashboard Details" %}</legend>
+                {% for field in form %}
+                    {% include "holodeck/partial/_form_field.html" %}
+                {% endfor %}
+            </fieldset>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'holodeck/widgets/base.html' %}
+
+{% block widget %}
+    <div class="deviation">
+        <div class="sample">{{ current }}</div>
+        <div class="indicator {{ previous.color }}">
+            <div>{{ previous.percentage }}%</div>
+            <div class="byline">previous</div>
+        </div>
+        <div class="indicator {{ average.color }}">
+            <div>{{ average.percentage }}%</div>
+            <div class="byline">average</div>
+        </div>
+        <div class="indicator {{ peak.color }}">
+            <div>{{ peak.percentage }}%</div>
+            <div class="byline">peak</div>
+        </div>
+    </div>
+{% endblock %}

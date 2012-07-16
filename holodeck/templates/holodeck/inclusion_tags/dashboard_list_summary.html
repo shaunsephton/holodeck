@@ -1,0 +1,65 @@
+{% load i18n %}
+
+<li class="event" data-count="{{ group.times_seen|safe }}" data-score="{{ group.sort_value|safe }}" data-group="{{ group.id|safe }}">
+<div class="count {{ previous.color }}"><span>{% if metric %}{{ previous.percentage }}%{% else %} NA {% endif %}</span></div>
+    <div class="details">
+        <h3>
+            <a href="{% url holodeck-view-dashboard dashboard.id %}">{{ dashboard.name }}</a>
+        </h3>
+        <p class="message" title="{{ group.message }}">
+            {{ metric.name }}
+        </p>
+    </div>
+    <div id="chart{{ metric.id }}" class="chart">
+        {% if metric %}
+            <span class="loading">{% trans "Loading data..." %}</span>
+        {% else %}
+            {% url holodeck-new-metric dashboard.pk as link %}
+            <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
+        {% endif %}
+    </div>
+    {% if metric %}
+    <script type="text/javascript">
+        (function basic(container) {
+         graph = Flotr.draw(container, {{ samples|safe }}, {
+                grid: {
+                    verticalLines: false,
+                    horizontalLines: false,
+                    outlineWidth: 0,
+                },
+                shadowSize: 3,
+                lines: {
+                    show: true,
+                    fill: true,
+                    lineWidth: 4,
+                    fillOpacity: 0.125,
+                },
+                points: {
+                    show: true,
+                    lineWidth: 3,
+                    hitRadius: 5,
+                },
+                mouse: {
+                    track: true,
+                    lineColor: "black",
+                    relative: true,
+                    position: "n",
+                    sensibility: 10,
+                },
+                colors: ["#058dc7", "#f36a67", "#90c7a0", "#eba44c", "#fedd74"],
+                yaxis: {
+                    showLabels: false,
+                    min: 0,
+                    max: {{ y_max }}
+                },
+                xaxis: {
+                    showLabels: false
+                },
+                legend: {
+                    show: false,
+                },
+            });
+        })(document.getElementById("chart{{ metric.id }}"));
+    </script>
+    {% endif %}
+</li>
