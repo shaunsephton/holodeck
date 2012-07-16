@@ -12,7 +12,10 @@ from holodeck.decorators import login_required
 
 @login_required
 def holodeck(request):
-    return render_to_response('holodeck/dashboard.html', {}, context_instance=RequestContext(request))
+    context = {
+        'dashboard_list': Dashboard.objects.all().order_by('name')
+    }
+    return render_to_response('holodeck/dashboard.html', context, context_instance=RequestContext(request))
 
 @csrf_protect
 def login(request):
