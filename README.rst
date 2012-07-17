@@ -6,13 +6,13 @@ Simple & scalable dashboard system.
 Demo Screenshot
 ---------------
 
-.. image:: https://github.com/downloads/praekelt/holodeck/screenie.png
+.. image:: https://github.com/downloads/shaunsephton/holodeck/screenie.png
 
 Getting Started
 ---------------
 Initialize Holodeck from scratch like so::
 
-    $ git clone git@github.com:praekelt/holodeck
+    $ git clone git@github.com:shaunsephton/holodeck
     $ cd holodeck
     $ virtualenv ve
     $ . ve/bin/activate
