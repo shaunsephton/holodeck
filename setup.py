@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name='holodeck',
-    version='0.0.4',
+    version='0.0.5',
     description='Simple & scalable dashboard system.',
     long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
-    author='Praekelt Foundation',
-    author_email='dev@praekelt.com',
-    url='http://github.com/praekelt/holodeck',
+    author='Shaun Sephton',
+    author_email='shaun@28lines.com',
+    url='http://github.com/shaunsephton/holodeck',
     packages = find_packages(),
     install_requires = [
         'django',
