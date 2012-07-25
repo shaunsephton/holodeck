@@ -15,8 +15,13 @@
 
 {% block main %}
     <section class="body">
-        {% for metric in metrics %}
-            {{ metric.render }}
-        {% endfor %}
+        {% if not metrics %}
+            {% url holodeck-new-metric dashboard.pk as link %}
+            <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
+        {% else %}
+            {% for metric in metrics %}
+                {{ metric.render }}
+            {% endfor %}
+        {% endif %}
     </section>
 {% endblock %}
