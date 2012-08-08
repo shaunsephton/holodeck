@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='holodeck',
-    version='0.0.5',
-    description='Simple & scalable dashboard system.',
+    version='0.0.6',
+    description='Django based simple dashboard system.',
     long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
     author='Shaun Sephton',
     author_email='shaun@28lines.com',
@@ -11,10 +11,15 @@ setup(
     packages = find_packages(),
     install_requires = [
         'django',
+        'logan',
         'south',
     ],
     include_package_data=True,
-    scripts = ['holodeck/bin/holodeck'],
+    entry_points={
+        'console_scripts': [
+            'holodeck = holodeck.logan_runner:main',
+        ],
+    },
     classifiers=[
         "Programming Language :: Python",
         "License :: OSI Approved :: BSD License",

@@ -1,4 +1,3 @@
-from holodeck.settings import *
 import os
 import sys
 
