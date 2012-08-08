@@ -11,10 +11,15 @@ setup(
     packages = find_packages(),
     install_requires = [
         'django',
+        'logan',
         'south',
     ],
     include_package_data=True,
-    scripts = ['holodeck/bin/holodeck'],
+    entry_points={
+        'console_scripts': [
+            'holodeck = holodeck.logan_runner:main',
+        ],
+    },
     classifiers=[
         "Programming Language :: Python",
         "License :: OSI Approved :: BSD License",
