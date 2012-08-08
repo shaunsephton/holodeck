@@ -13,7 +13,7 @@ Getting Started
 
 Environment Setup
 ~~~~~~~~~~~~~~~~~
-Before installing Holodeck it is strongly recommended that you create a sandboxed environment using ``virtualenv`` or the like. To do that go to a path in which you want to create a Holodeck instance and issue the following command::
+Before installing Holodeck it is strongly recommended that you create a sandboxed environment using ``virtualenv`` or the like. To do so go to a path in which you want to create a Holodeck instance and issue the following command::
 
     $ virtualenv ve
 
@@ -24,8 +24,9 @@ Then activate your virtualenv::
 Now install Holodeck using pip::
 
     $ pip install holodeck
-
+    
 Once installed you should be able to execute the Holodeck CLI using ``holodeck``, i.e::
+
     $ holodeck
     usage: holodeck [--config=/path/to/settings.py] [command] [options]
 
