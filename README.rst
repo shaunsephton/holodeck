@@ -34,7 +34,7 @@ By default the CLI looks for a configuration file in the current working path ca
 
 Configuration Initialization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Holodeck allows you to specify settings to tweak it's behaviour for your particular use case. To generate a default settings file use the ``init`` command which allows you to specify an alternative path (otherwise it defaults to the current working path)::
+Holodeck allows you to specify settings to tweak it's behaviour for your particular use case. To generate a default settings file use the ``init`` command. ``init`` allows you to specify an alternative path (otherwise it defaults to the current working path)::
 
     $ holodeck init
     Configuration file created at '/home/bill/holodeck/holodeck.conf.py'
