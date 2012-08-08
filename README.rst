@@ -44,7 +44,7 @@ Holodeck allows you to specify settings to tweak it's behaviour for your particu
     $ holodeck init /etc/holodeck.conf.py
     Configuration file created at '/etc/holodeck.conf.py'
 
-You can specify Holodeck and Django settings within the generated file (defaults to ``holodeck.conf.py``), for instance which database engine you want to use.
+Then you can customize Holodeck and Django settings within the generated file (defaults to ``holodeck.conf.py``), for instance which database engine you want to use.
 
 Creating Database Tables
 ~~~~~~~~~~~~~~~~~~~~~~~~
