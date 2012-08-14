@@ -66,6 +66,15 @@ def view_dashboard(request, dashboard_id):
     }
     return render_to_response('holodeck/dashboard/view.html', context, context_instance=RequestContext(request))
 
+@login_required
+def export_dashboard(request, dashboard_id):
+    dashboard = Dashboard.objects.get(id=dashboard_id)
+    context = {
+        'dashboard': dashboard,
+        'metrics': dashboard.metric_set.all()
+    }
+    return render_to_response('holodeck/dashboard/view.html', context, context_instance=RequestContext(request))
+
 
 @csrf_protect
 @login_required
