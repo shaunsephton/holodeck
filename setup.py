@@ -13,6 +13,7 @@ setup(
         'django',
         'logan',
         'south',
+        'xlwt',
     ],
     include_package_data=True,
     entry_points={
