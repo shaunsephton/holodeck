@@ -16,9 +16,6 @@ class Widget(object):
         context = self.get_context(metric)
         return render_to_string(self.template_name, context)
 
-    def render_export(self, metric):
-        pass
-
 
 class LineChart(Widget):
     name = 'Line Chart'
