@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     # Dashboards.
     url(r'^dashboards/new/$', views.new_dashboard, name='holodeck-new-dashboard'),
     url(r'^dashboards/(?P<dashboard_id>\d+)$', views.view_dashboard, name='holodeck-view-dashboard'),
+    url(r'^dashboards/(?P<dashboard_id>\d+)/export$', views.export_dashboard, name='holodeck-export-dashboard'),
     
     # Metrics.
     url(r'^metrics/(?P<dashboard_id>\d+)/new/$', views.new_metric, name='holodeck-new-metric'),
