@@ -1,14 +1,19 @@
+from datetime import date
+from StringIO import StringIO
+
 from django.contrib.auth import logout as logout_
 from django.contrib.auth import login as login_
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template.defaultfilters import slugify
 from django.views.decorators.csrf import csrf_protect
 from holodeck.models import Dashboard, Metric
 from holodeck.decorators import login_required
+import xlwt
 
 @login_required
 def holodeck(request):
@@ -68,12 +73,22 @@ def view_dashboard(request, dashboard_id):
 
 @login_required
 def export_dashboard(request, dashboard_id):
+    """
+    Exports dashboard as multi-sheet Excel workbook.
+    """
     dashboard = Dashboard.objects.get(id=dashboard_id)
-    context = {
-        'dashboard': dashboard,
-        'metrics': dashboard.metric_set.all()
-    }
-    return render_to_response('holodeck/dashboard/view.html', context, context_instance=RequestContext(request))
+    
+    stream = StringIO()
+    workbook = xlwt.Workbook()
+
+    for metric in dashboard.metric_set.all():
+        metric.export(workbook)
+    
+    workbook.save(stream)
+    
+    response = HttpResponse(stream.getvalue(), mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="%s-%s.xls"' % (slugify(dashboard.name), date.today())
+    return response
 
 
 @csrf_protect
