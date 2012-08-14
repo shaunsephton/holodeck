@@ -10,6 +10,7 @@
 
 {% block page_header %}
     <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
+    <a href="{% url holodeck-export-dashboard dashboard.pk %}" class="btn pull-right">{% trans "Export" %}</a>
     {{ block.super }}
 {% endblock %}
 
