@@ -1,6 +1,7 @@
 from datetime import date
 from StringIO import StringIO
 
+from django.contrib import messages
 from django.contrib.auth import logout as logout_
 from django.contrib.auth import login as login_
 from django.contrib.auth.forms import AuthenticationForm
@@ -254,4 +255,18 @@ def remove_metric(request, metric_id):
     metric.delete()
     return HttpResponseRedirect(
         reverse('holodeck-view-dashboard', args=[dashboard.pk])
+    )
+
+
+@login_required
+def purge_metric_samples(request, metric_id):
+    # TODO: Needs a warning.
+    metric = Metric.objects.get(id=metric_id)
+    metric.sample_set.all().delete()
+    messages.success(
+        request,
+        'All samples for this metric have been purged/removed.'
+    )
+    return HttpResponseRedirect(
+        reverse('holodeck-manage-metric', args=[metric.id])
     )
