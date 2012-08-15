@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.0.8 (2012-08-15)
+------------------
+#. Added Dashboard manage/edit view.
+#. Allowed for purging of metric samples `#2 <https://github.com/shaunsephton/holodeck/issues/2>`_
+#. Added public/sharing urls for dashboards `#4 `https://github.com/shaunsephton/holodeck/issues/4>`_
+
 0.0.7 (2012-08-14)
 ------------------
 #. Added Excel export action on Dashboard view.
