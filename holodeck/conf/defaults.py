@@ -91,7 +91,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages"
+    "django.contrib.messages.context_processors.messages",
+    "holodeck.context_processors.site"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'holodeck',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,3 +157,5 @@ LOGGING = {
         },
     }
 }
+
+SITE_URL = 'http://localhost:8000'
