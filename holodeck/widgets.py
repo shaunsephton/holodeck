@@ -12,8 +12,8 @@ class Widget(object):
         return [group['string_value'] for group in
                 metric.sample_set.all().values('string_value').distinct()]
 
-    def render(self, metric):
-        context = self.get_context(metric)
+    def render(self, metric, context):
+        context.update(self.get_context(metric))
         return render_to_string(self.template_name, context)
 
 
