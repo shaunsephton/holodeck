@@ -18,9 +18,6 @@ DATABASES = {
         'PORT': '',
     }
 }
-
-# Set this to False to require authentication
-PUBLIC = False
 """
 
 def generate_settings():
