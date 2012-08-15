@@ -12,7 +12,7 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from django.views.decorators.csrf import csrf_protect
 from holodeck.models import Dashboard, Metric
-from holodeck.decorators import login_required
+from holodeck.decorators import login_required, validate_share
 import xlwt
 
 
@@ -57,6 +57,30 @@ def logout(request):
 
 @csrf_protect
 @login_required
+def manage_dashboard(request, dashboard_id):
+    from holodeck.forms import ManageDashboardForm
+    dashboard = Dashboard.objects.get(id=dashboard_id)
+
+    form_cls = ManageDashboardForm
+
+    form = form_cls(request.POST or None, instance=dashboard)
+    if form.is_valid():
+        dashboard = form.save()
+        return HttpResponseRedirect(request.path + '?success=1')
+
+    context = {
+        'dashboard': dashboard,
+        'form': form,
+    }
+    return render_to_response(
+        'holodeck/dashboard/manage.html',
+        context,
+        context_instance=RequestContext(request)
+    )
+
+
+@csrf_protect
+@login_required
 def new_dashboard(request):
     from holodeck.forms import NewDashboardForm
 
@@ -82,24 +106,13 @@ def new_dashboard(request):
     )
 
 
-@login_required
-def view_dashboard(request, dashboard_id):
-    dashboard = Dashboard.objects.get(id=dashboard_id)
-    context = {
-        'dashboard': dashboard,
-        'metrics': dashboard.metric_set.all()
-    }
-    return render_to_response(
-        'holodeck/dashboard/view.html',
-        context,
-        context_instance=RequestContext(request)
-    )
-
-
-@login_required
-def export_dashboard(request, dashboard_id):
+def _export_dashboard(request, dashboard_id):
     """
     Exports dashboard as multi-sheet Excel workbook.
+
+    This is a helper method for export_dashboard and export_shared_dashboard
+    below. Renders an export without requiring login, should not be exposed
+    directly via a URL pattern.
     """
     dashboard = Dashboard.objects.get(id=dashboard_id)
 
@@ -119,6 +132,61 @@ def export_dashboard(request, dashboard_id):
         % (slugify(dashboard.name), date.today())
     stream.close()
     return response
+
+
+def _view_dashboard(request, dashboard_id, template):
+    """
+    This is a helper method for view_dashboard and share_dashboard below.
+    Renders a dashboard without requiring login, should not be exposed directly
+    via a URL pattern.
+    """
+    dashboard = Dashboard.objects.get(id=dashboard_id)
+    context = {
+        'dashboard': dashboard,
+        'metrics': dashboard.metric_set.all()
+    }
+    return render_to_response(
+        template,
+        context,
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def export_dashboard(request, dashboard_id):
+    return _export_dashboard(request, dashboard_id)
+
+
+@validate_share
+def export_shared_dashboard(request, dashboard_id, share_key):
+    return _export_dashboard(request, dashboard_id)
+
+
+@login_required
+def remove_dashboard(request, dashboard_id):
+    dashboard = Dashboard.objects.get(id=dashboard_id)
+    dashboard.delete()
+    return HttpResponseRedirect(
+        reverse('holodeck')
+    )
+
+
+@validate_share
+def share_dashboard(request, dashboard_id, share_key):
+    return _view_dashboard(
+        request,
+        dashboard_id,
+        'holodeck/dashboard/share.html'
+    )
+
+
+@login_required
+def view_dashboard(request, dashboard_id):
+    return _view_dashboard(
+        request,
+        dashboard_id,
+        'holodeck/dashboard/view.html'
+    )
 
 
 @csrf_protect
