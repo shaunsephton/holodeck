@@ -21,7 +21,7 @@
         <p>{% trans "Here you can edit Metric information and display settings as well as source client configuration info." %}</p>
             <hr>
             {% if request.GET.success %}
-                <div class="alert alert-success">{% trans "Changes to your metric were saved successfully." %}</div>
+                <div class="alert alert-success">{% trans "Changes to this metric were saved successfully." %}</div>
             {% else %}
                 {% if form.errors %}
                     <div class="alert alert-error">{% trans "Please correct the errors below." %}</div>
