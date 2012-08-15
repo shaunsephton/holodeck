@@ -13,13 +13,20 @@ def dashboard_dropdown(context):
     return context
 
 
+@register.inclusion_tag('holodeck/inclusion_tags/render_metric.html', takes_context=True)
+def render_metric(context, metric):
+    return {'result': metric.render(context)}
+
+
 @register.inclusion_tag('holodeck/inclusion_tags/dashboard_list_summary.html')
 def dashboard_list_summary(dashboard):
     context = {
         'dashboard': dashboard,
     }
 
-    metrics = dashboard.metric_set.filter(widget_type='holodeck.widgets.LineChart')
+    metrics = dashboard.metric_set.filter(
+        widget_type='holodeck.widgets.LineChart'
+    )
 
     sampled_metric = None
     for metric in metrics:
