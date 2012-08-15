@@ -1,0 +1,27 @@
+{% extends "holodeck/layout.html" %}
+
+{% load i18n holodeck_inclusion_tags %}
+
+{% block title %}{{ dashboard.name }} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url holodeck-share-dashboard dashboard.pk dashboard.share_key %}">{{ dashboard.name }}</a></li>
+{% endblock %}
+
+{% block page_header %}
+    <a href="{% url holodeck-export-shared-dashboard dashboard.pk dashboard.share_key %}" class="btn pull-right">{% trans "Export" %}</a>
+    {{ block.super }}
+{% endblock %}
+
+{% block main %}
+    <section class="body">
+        {% if not metrics %}
+            {% url holodeck-new-metric dashboard.pk as link %}
+            <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
+        {% else %}
+            {% for metric in metrics %}
+                {% render_metric metric %}
+            {% endfor %}
+        {% endif %}
+    </section>
+{% endblock %}
