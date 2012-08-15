@@ -1,0 +1,52 @@
+{% extends "holodeck/layout.html" %}
+
+{% load i18n %}
+
+{% block title %}{% blocktrans with dashboard.name as name %}Manage Dashboard: {{ name }}{% endblocktrans %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
+    <li class="divider">/</li>
+    <li><a href="{% url holodeck-manage-dashboard dashboard.id %}">Edit</a></li>
+{% endblock %}
+
+{% block page_header %}
+    <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
+    {{ block.super }}
+{% endblock %}
+
+{% block main %}
+    <section class="body">
+        {% block inner %}
+        <p>{% trans "Here you can edit Dashboard information as well as access public URLs for sharing with 3rd parties." %}</p>
+            <hr>
+            {% if request.GET.success %}
+                <div class="alert alert-success">{% trans "Changes to this dashboard were saved successfully." %}</div>
+            {% else %}
+                {% if form.errors %}
+                    <div class="alert alert-error">{% trans "Please correct the errors below." %}</div>
+                {% endif %}
+            {% endif %}
+            <form class="form-stacked" action="" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <div><legend>{% trans "Dashboard Details" %}</legend></div>
+                    {% for field in form %}
+                        {% if field.name != 'origins' %}
+                            {% include "holodeck/partial/_form_field.html" %}
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                <fieldset id="client-security">
+                    <div><legend>{% trans "Sharing URL" %}</legend></div>
+                    <p>{% trans "To share this dashboard with 3rd parties for viewing send them the following publicly accessible URL:" %}</p>
+                    <p><code class="clippy">{{ SITE_URL }}{% url holodeck-share-dashboard dashboard.id dashboard.share_key %}</code></p>
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                    <a href="{% url holodeck-remove-dashboard dashboard.id %}" class="btn btn-danger">{% trans "Remove Dashboard" %}</a>
+                </div>
+            </form>
+        {% endblock %}
+    </section>
+{% endblock %}

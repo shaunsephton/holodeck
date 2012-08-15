@@ -4,15 +4,31 @@ from holodeck.models import Dashboard, Metric
 
 
 class NewDashboardForm(forms.ModelForm):
-    name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': _('e.g. My Dashboard Name')}))
+    name = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs={
+            'placeholder': _('e.g. My Dashboard Name')
+        })
+    )
 
     class Meta:
         fields = ('name', 'owner')
         model = Dashboard
 
 
+class ManageDashboardForm(NewDashboardForm):
+    class Meta:
+        fields = ('name', 'owner')
+        model = Dashboard
+
+
 class NewMetricForm(forms.ModelForm):
-    name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': _('e.g. My Metric Name')}))
+    name = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs={
+            'placeholder': _('e.g. My Metric Name')
+        })
+    )
 
     class Meta:
         fields = ('name', 'widget_type', )

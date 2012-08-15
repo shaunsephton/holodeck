@@ -6,9 +6,24 @@ from holodeck.utils import get_widget_type_choices, load_class_by_string
 import xlwt
 
 
+def generate_key():
+    return uuid.uuid4().hex
+
+
 class Dashboard(models.Model):
     name = models.CharField(max_length=255)
     owner = models.ForeignKey(User, null=True)
+    share_key = models.CharField(
+        max_length=32,
+        unique=True,
+        blank=True,
+        null=True
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.share_key:
+            self.share_key = generate_key()
+        super(Dashboard, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -31,12 +46,8 @@ class Metric(models.Model):
     def __unicode__(self):
         return self.name
 
-    @classmethod
-    def generate_api_key(cls):
-        return uuid.uuid4().hex
-
-    def render(self):
-        return load_class_by_string(self.widget_type)().render(self)
+    def render(self, context):
+        return load_class_by_string(self.widget_type)().render(self, context)
 
     def export(self, workbook):
         """
@@ -81,7 +92,7 @@ class Metric(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.api_key:
-            self.api_key = Metric.generate_api_key()
+            self.api_key = generate_key()
         super(Metric, self).save(*args, **kwargs)
 
 

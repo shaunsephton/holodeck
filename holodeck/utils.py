@@ -3,7 +3,6 @@ import sys
 
 from holodeck import widgets
 
-
 def load_class_by_string(class_path):
     """
     Returns a class when given its full name in
