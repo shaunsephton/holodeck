@@ -5,7 +5,7 @@
 {% block title %}{{ dashboard.name }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
+    <li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a> <a class="action" href="{% url holodeck-manage-dashboard dashboard.id %}">Edit</a></li>
 {% endblock %}
 
 {% block page_header %}
@@ -21,7 +21,7 @@
             <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
         {% else %}
             {% for metric in metrics %}
-                {{ metric.render }}
+                {% render_metric metric %}
             {% endfor %}
         {% endif %}
     </section>
