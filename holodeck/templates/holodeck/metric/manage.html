@@ -27,6 +27,11 @@
                     <div class="alert alert-error">{% trans "Please correct the errors below." %}</div>
                 {% endif %}
             {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
             <form class="form-stacked" action="" method="post">
                 {% csrf_token %}
                 <fieldset>
@@ -45,6 +50,7 @@
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
                     <a href="{% url holodeck-remove-metric metric.id %}" class="btn btn-danger">{% trans "Remove Metric" %}</a>
+                    <a href="{% url holodeck-purge-metric-samples metric.id %}" class="btn btn-danger">{% trans "Purge Samples" %}</a>
                 </div>
             </form>
         {% endblock %}
