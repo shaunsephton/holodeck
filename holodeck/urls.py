@@ -12,7 +12,11 @@ urlpatterns = patterns('',
     # Dashboards.
     url(r'^dashboards/new/$', views.new_dashboard, name='holodeck-new-dashboard'),
     url(r'^dashboards/(?P<dashboard_id>\d+)$', views.view_dashboard, name='holodeck-view-dashboard'),
-    url(r'^dashboards/(?P<dashboard_id>\d+)/export$', views.export_dashboard, name='holodeck-export-dashboard'),
+    url(r'^dashboards/(?P<dashboard_id>\d+)/manage/$', views.manage_dashboard, name='holodeck-manage-dashboard'),
+    url(r'^dashboards/(?P<dashboard_id>\d+)/export/$', views.export_dashboard, name='holodeck-export-dashboard'),
+    url(r'^dashboards/(?P<dashboard_id>\d+)/export/(?P<share_key>[\w-]+)/$', views.export_shared_dashboard, name='holodeck-export-shared-dashboard'),
+    url(r'^dashboards/(?P<dashboard_id>\d+)/remove/$', views.remove_dashboard, name='holodeck-remove-dashboard'),
+    url(r'^dashboards/(?P<dashboard_id>\d+)/(?P<share_key>[\w-]+)/$', views.share_dashboard, name='holodeck-share-dashboard'),
     
     # Metrics.
     url(r'^metrics/(?P<dashboard_id>\d+)/new/$', views.new_metric, name='holodeck-new-metric'),
