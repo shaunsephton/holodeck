@@ -1,4 +1,4 @@
-AUTHORS
+Authors
 =======
 
 Created By
