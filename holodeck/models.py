@@ -84,11 +84,19 @@ class Metric(models.Model):
             row = timestamps.index(sample.timestamp) + 1
             col = string_values.index(sample.string_value) + 1
 
-            worksheet.write(row, col, sample.integer_value)
-            if len(str(sample.integer_value)) > len(sample.string_value):
-                worksheet.col(col).width = (
-                    1 + len(str(sample.integer_value))
-                ) * 256
+            try:
+                worksheet.write(row, col, sample.integer_value)
+                if len(str(sample.integer_value)) > len(sample.string_value):
+                    worksheet.col(col).width = (
+                        1 + len(str(sample.integer_value))
+                    ) * 256
+            except Exception, e:
+                if 'overwrite' in e.message:
+                    # Ignore duplicate samples.
+                    # XXX: Enforce on import.
+                    pass
+                else:
+                    raise e
 
     def save(self, *args, **kwargs):
         if not self.api_key:

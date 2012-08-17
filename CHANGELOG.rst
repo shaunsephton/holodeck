@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.0.9 (2012-08-16)
+------------------
+#. Prevented duplicate samples from breaking export (duplicates are ignored).
+#. Prevented widgets from affecting each other through context copy.
+#. Corrected broken footer links.
+
 0.0.8 (2012-08-15)
 ------------------
 #. Added Dashboard manage/edit view.

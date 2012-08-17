@@ -1,3 +1,5 @@
+from copy import copy
+
 from django import template
 from holodeck.models import Dashboard
 from holodeck.widgets import LineChart, SampleDeviation
@@ -15,6 +17,7 @@ def dashboard_dropdown(context):
 
 @register.inclusion_tag('holodeck/inclusion_tags/render_metric.html', takes_context=True)
 def render_metric(context, metric):
+    context = copy(context)
     return {'result': metric.render(context)}
 
 
