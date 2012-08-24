@@ -24,7 +24,7 @@ class LineChart(Widget):
     def get_context(self, metric):
         context = {
             'metric': metric,
-            'width': '600px'
+            'width': '8'
         }
 
         groups = self.get_groups(metric)
@@ -61,7 +61,7 @@ class PieChart(Widget):
     def get_context(self, metric):
         context = {
             'metric': metric,
-            'width': '300px'
+            'width': '4'
         }
 
         groups = self.get_groups(metric)
@@ -111,7 +111,7 @@ class SampleDeviation(Widget):
         from django.db.models import Avg, Max
         context = {
             'metric': metric,
-            'width': '300px'
+            'width': '4'
         }
 
         try:
