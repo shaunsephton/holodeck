@@ -180,6 +180,7 @@ def share_dashboard(request, dashboard_id, share_key):
         'holodeck/dashboard/share.html'
     )
 
+
 @login_required
 def sort_dashboard(request, dashboard_id):
     for position, id in enumerate(request.GET['order'].split(',')):
