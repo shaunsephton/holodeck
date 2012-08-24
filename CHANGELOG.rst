@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Next
+----
+#. Added drag and drop ordering of metrics on dashboard view.
+
 0.0.9 (2012-08-16)
 ------------------
 #. Prevented duplicate samples from breaking export (duplicates are ignored).
