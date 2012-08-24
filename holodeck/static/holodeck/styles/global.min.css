@@ -790,3 +790,5 @@ legend{margin-bottom:18px;}
 
 .event .details {position: absolute; width: 200px; left: 100px;}
 .event .chart {float: left; height: 60px; width: 100%;}
+
+.ui-sort-highlight { border: 2px dashed #DDDDDD; margin: 5px;}
