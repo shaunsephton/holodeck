@@ -5,19 +5,21 @@
 {% block title %}{{ dashboard.name }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a> <a class="action" href="{% url holodeck-manage-dashboard dashboard.id %}">Edit</a></li>
+    <li><a href="{% url holodeck-view-dashboard dashboard.id %}">{{ dashboard.name }}</a> <a class="action" href="{% url holodeck-manage-dashboard dashboard.id %}">Edit</a></li>
 {% endblock %}
 
 {% block page_header %}
-    <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
-    <a href="{% url holodeck-export-dashboard dashboard.pk %}" class="btn pull-right">{% trans "Export" %}</a>
+    <a href="{% url holodeck-new-metric dashboard.id %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
+    <a href="{% url holodeck-export-dashboard dashboard.id %}" class="btn pull-right">{% trans "Export" %}</a>
     {{ block.super }}
 {% endblock %}
 
 {% block main %}
-    <section class="body">
+<style>
+</style>
+    <section class="body" id="sortable">
         {% if not metrics %}
-            {% url holodeck-new-metric dashboard.pk as link %}
+            {% url holodeck-new-metric dashboard.id as link %}
             <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
         {% else %}
             {% for metric in metrics %}
@@ -25,4 +27,23 @@
             {% endfor %}
         {% endif %}
     </section>
+    <script>
+        $(function() {
+            $("#sortable").sortable({
+                placeholder: "widget ui-sort-highlight",
+                opacity: 0.5,
+                revert: 200,
+                start: function(event, ui){
+                    $(ui.placeholder).css("width", $(ui.helper).css("width"));
+                    $(ui.placeholder).css("height", $(ui.helper).css("height"));
+                },
+                update: function(event, ui) {
+                    var order = $(this).sortable("toArray").toString();
+                    console.log(order);
+                    $.get("{% url holodeck-sort-dashboard dashboard.id %}", {order: order});
+                }
+		    });
+    		$("#sortable").disableSelection();
+    	});
+	</script>
 {% endblock %}
