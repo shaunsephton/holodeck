@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.1.0 (2012-08-25)
+------------------
+#. Added gage metric type `#7 <https://github.com/shaunsephton/holodeck/issues/7>`_.
+#. Added drag and drop ordering of metrics on dashboard view `#9 <https://github.com/shaunsephton/holodeck/issues/9>`_.
+#. Switched to Bootstrap scaffolding for metric/widget alignment/responsiveness `#10 <https://github.com/shaunsephton/holodeck/issues/10>`_.
+
 0.0.9 (2012-08-16)
 ------------------
 #. Prevented duplicate samples from breaking export (duplicates are ignored).

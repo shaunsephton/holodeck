@@ -42,6 +42,10 @@ class Metric(models.Model):
         blank=True,
         null=True
     )
+    position = models.IntegerField(
+        blank=True,
+        null=True,
+    )
 
     def __unicode__(self):
         return self.name
@@ -102,6 +106,9 @@ class Metric(models.Model):
         if not self.api_key:
             self.api_key = generate_key()
         super(Metric, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['position', '-id']
 
 
 class Sample(models.Model):
