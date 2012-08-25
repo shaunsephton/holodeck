@@ -1,0 +1,24 @@
+{% extends 'holodeck/widgets/base.html' %}
+
+{% load i18n %}
+
+{% block widget %}
+
+{% for sample in samples %}
+<div id="gage{{ metric.id }}{{ sample.id }}" class="gage{{ count }}">
+    </div>
+    <script>
+        if (!$("#gage{{ metric.id }}{{ sample.id }} svg").length) {
+            var g = new JustGage({
+                id: "gage{{ metric.id }}{{ sample.id }}",
+                value: {{ sample.latest }},
+                min: {{ sample.min }},
+                max: {{ sample.max }},
+                title: "{{ sample.title }}",
+                levelColors: ["#F36A67", "#FEDD74", "#90C7A0"],
+            });
+        }
+    </script>
+{% endfor %}
+
+{% endblock %}
