@@ -16,6 +16,45 @@ class Widget(object):
         context.update(self.get_context(metric))
         return render_to_string(self.template_name, context)
 
+class Gage(Widget):
+    name = 'Gage'
+    template_name = 'holodeck/widgets/gage.html'
+
+    def get_context(self, metric):
+        context = {
+            'metric': metric,
+            'width': '4'
+        }
+
+        groups = self.get_groups(metric)
+
+        if not groups:
+            context['no_samples'] = True
+            return context
+
+        samples = []
+        for group in groups:
+            group_samples = metric.sample_set.filter(
+                string_value=group
+            ).order_by('-timestamp')
+            group_sample_values = [sample.integer_value for sample in group_samples]
+            latest_sample = group_samples[0]
+            min_value = min(group_sample_values)
+            max_value = max(group_sample_values)
+            if min_value == max_value:
+                min_value = 0
+            samples.append({'title': group, 'min': min_value, 'max': max_value, 'latest': latest_sample.integer_value, 'id': latest_sample.id})
+
+        # Limit samples to 4
+        samples = samples[:4]
+
+        context.update({
+            'samples': samples,
+            'count': len(samples),
+        })
+
+        return context
+
 
 class LineChart(Widget):
     name = 'Line Chart'
