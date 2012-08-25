@@ -792,3 +792,8 @@ legend{margin-bottom:18px;}
 .event .chart {float: left; height: 60px; width: 100%;}
 
 .ui-sort-highlight { border: 2px dashed #DDDDDD; margin-left: 20px; margin-right: -3px; margin-bottom: 18px; float: left;}
+
+.gage1 { height: 100%; width: 100%; float: left; }
+.gage2 { margin-top: 20%; height: 50%; width: 50%; float: left; }
+.gage3 { height: 50%; width: 50%; float: left; }
+.gage4 { height: 50%; width: 50%; float: left; }
