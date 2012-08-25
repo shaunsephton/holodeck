@@ -37,7 +37,6 @@
                 },
                 update: function(event, ui) {
                     var order = $(this).sortable("toArray").toString();
-                    console.log(order);
                     $.get("{% url holodeck-sort-dashboard dashboard.id %}", {order: order});
                 }
 		    });
