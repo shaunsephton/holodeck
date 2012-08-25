@@ -6,7 +6,7 @@ Django based simple dashboard system.
 Demo Screenshot
 ---------------
 
-.. image:: https://github.com/downloads/shaunsephton/holodeck/screenie.png
+.. image:: https://github.com/downloads/shaunsephton/holodeck/screenie.0.1.0.png
 
 Getting Started
 ---------------
@@ -62,4 +62,7 @@ With Holodeck installed and configured you can now fire up a local Holodeck inst
 
 Then access the instance on `http://localhost:8000 <http://localhost:8000>`_.
 
+Pushing Data
+~~~~~~~~~~~~
+Python users can use `Photon <http://pypi.python.org/pypi/photon>`_ to push data to Holodeck. Photon includes `examples <https://github.com/shaunsephton/photon/tree/master/photon/examples>`_ you can use as a starting point. 
 
