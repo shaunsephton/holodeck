@@ -56,6 +56,17 @@ class Gage(Widget):
         return context
 
 
+class Map(Widget):
+    name = 'Map'
+    template_name = 'holodeck/widgets/map.html'
+
+    def get_context(self, metric):
+        return {
+            'metric': metric,
+            'width': '8'
+        }
+
+
 class LineChart(Widget):
     name = 'Line Chart'
     template_name = 'holodeck/widgets/line_chart.html'
