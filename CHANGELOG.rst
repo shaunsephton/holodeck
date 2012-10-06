@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Next
+----
+#. Widget groupings consistent on timestamp `#11 <https://github.com/shaunsephton/holodeck/issues/11>`_.
+#. Samples are now unique on metric, string_value and timestamp, with existing sample integer_value fields being overriden on push `#13 <https://github.com/shaunsephton/holodeck/issues/13>`_.
+
 0.1.0 (2012-08-25)
 ------------------
 #. Added gage metric type `#7 <https://github.com/shaunsephton/holodeck/issues/7>`_.
