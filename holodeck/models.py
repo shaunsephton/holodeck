@@ -118,3 +118,8 @@ class Sample(models.Model):
     )
     string_value = models.CharField(max_length=64)
     timestamp = models.DateTimeField()
+
+    class Meta:
+        unique_together = (
+            ("metric", "string_value", "timestamp"),
+        )
