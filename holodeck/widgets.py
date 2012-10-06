@@ -9,8 +9,10 @@ class Widget(object):
         return NotImplementedError
 
     def get_groups(self, metric):
-        return [group['string_value'] for group in
-                metric.sample_set.all().values('string_value').distinct()]
+        latest = metric.sample_set.all().order_by('-timestamp')[:1]
+        if latest:
+            return [group['string_value'] for group in
+                metric.sample_set.filter(timestamp=latest[0].timestamp).values('string_value').distinct()]
 
     def render(self, metric, context):
         context.update(self.get_context(metric))
