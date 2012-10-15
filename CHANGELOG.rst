@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Next
-----
+0.1.1 (2012-10-15)
+------------------
 #. Added mouse hover date formatter `#6 <https://github.com/shaunsephton/holodeck/issues/6>`_.
 #. Widget groupings consistent on timestamp `#11 <https://github.com/shaunsephton/holodeck/issues/11>`_.
 #. Samples are now unique on metric, string_value and timestamp, with existing sample integer_value fields being overriden on push `#13 <https://github.com/shaunsephton/holodeck/issues/13>`_.
