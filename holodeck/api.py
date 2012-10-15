@@ -26,12 +26,13 @@ def store(request):
         timestamp = datetime.strptime(data['timestamp'], '%Y-%m-%d %H:%M:%S')
 
         for sample in data['samples']:
-            # TODO: get_or_create or check uniqueness on subset of fields?
-            Sample.objects.create(
-                metric_id=metric.id,
+            # Samples overide on metric, string and timestamp values.
+            sample_obj, created = Sample.objects.get_or_create(
+                metric=metric,
                 string_value=sample[0],
-                integer_value=sample[1],
                 timestamp=timestamp
             )
+            sample_obj.integer_value = sample[1]
+            sample_obj.save()
 
     return HttpResponse()

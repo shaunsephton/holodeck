@@ -113,6 +113,13 @@ class Metric(models.Model):
 
 class Sample(models.Model):
     metric = models.ForeignKey('holodeck.Metric')
-    integer_value = models.IntegerField()
+    integer_value = models.IntegerField(
+        default=0
+    )
     string_value = models.CharField(max_length=64)
     timestamp = models.DateTimeField()
+
+    class Meta:
+        unique_together = (
+            ("metric", "string_value", "timestamp"),
+        )
