@@ -172,8 +172,13 @@ class SampleDeviation(Widget):
         except IndexError:
             context['no_samples'] = True
             return context
-        previous = metric.sample_set.all().order_by(
-            '-timestamp')[1].integer_value
+
+        try:
+            previous = metric.sample_set.all().order_by(
+                '-timestamp')[1].integer_value
+        except IndexError:
+            previous = 0
+
         average = int(metric.sample_set.all().aggregate(
             Avg('integer_value'))['integer_value__avg'])
         peak = int(metric.sample_set.all().aggregate(
