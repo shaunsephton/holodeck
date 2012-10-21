@@ -14,18 +14,26 @@ class Widget(object):
             return [group['string_value'] for group in
                 metric.sample_set.filter(timestamp=latest[0].timestamp).values('string_value').distinct()]
 
-    def render(self, metric, context):
+    def render(self, metric, context, minimal):
         context.update(self.get_context(metric))
+        if minimal:
+            template_name = "holodeck/widgets/base_minimal.html"
+        else:
+            template_name = "holodeck/widgets/base_full.html"
+        context.update({
+            'template_name': template_name,
+        })
         return render_to_string(self.template_name, context)
 
 class Gage(Widget):
     name = 'Gage'
     template_name = 'holodeck/widgets/gage.html'
+    width = 4
 
     def get_context(self, metric):
         context = {
             'metric': metric,
-            'width': '4'
+            'width': self.width
         }
 
         groups = self.get_groups(metric)
@@ -61,22 +69,24 @@ class Gage(Widget):
 class Map(Widget):
     name = 'Map'
     template_name = 'holodeck/widgets/map.html'
+    width = 8
 
     def get_context(self, metric):
         return {
             'metric': metric,
-            'width': '8'
+            'width': self.width,
         }
 
 
 class LineChart(Widget):
     name = 'Line Chart'
     template_name = 'holodeck/widgets/line_chart.html'
+    width = 8
 
     def get_context(self, metric):
         context = {
             'metric': metric,
-            'width': '8'
+            'width': self.width,
         }
 
         groups = self.get_groups(metric)
@@ -109,11 +119,12 @@ class LineChart(Widget):
 class PieChart(Widget):
     name = 'Pie Chart'
     template_name = 'holodeck/widgets/pie_chart.html'
+    width = 4
 
     def get_context(self, metric):
         context = {
             'metric': metric,
-            'width': '4'
+            'width': self.width,
         }
 
         groups = self.get_groups(metric)
@@ -141,6 +152,7 @@ class PieChart(Widget):
 class SampleDeviation(Widget):
     name = 'Sample Deviation'
     template_name = 'holodeck/widgets/sample_deviation.html'
+    width = 4
 
     def calc_deviation(self, primary, secondary):
         if secondary == 0:
@@ -163,7 +175,7 @@ class SampleDeviation(Widget):
         from django.db.models import Avg, Max
         context = {
             'metric': metric,
-            'width': '4'
+            'width': self.width,
         }
 
         try:
