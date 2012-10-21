@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Next
+----
+#. Allowed for widget of-site embeds via phantomjs image generator `#8 <https://github.com/shaunsephton/holodeck/issues/8>`_.
+#. Added dropdown to quickly change widget types (still need to ajaxify).
+#. Switched to button groups, pretty.
+
 0.1.1 (2012-10-15)
 ------------------
 #. Added mouse hover date formatter `#6 <https://github.com/shaunsephton/holodeck/issues/6>`_.
