@@ -1,17 +1,23 @@
 from datetime import date
+import os
 from StringIO import StringIO
-
+import subprocess
+from tempfile import NamedTemporaryFile
+    
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout as logout_
 from django.contrib.auth import login as login_
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.template.defaultfilters import slugify
 from django.views.decorators.csrf import csrf_protect
+from holodeck import phantomjs
 from holodeck.models import Dashboard, Metric
 from holodeck.decorators import login_required, validate_share
 import xlwt
@@ -256,6 +262,46 @@ def manage_metric(request, metric_id):
         context_instance=RequestContext(request)
     )
 
+    
+def share_metric(request, metric_id, share_key):
+    """
+    XXX: This needs a lot of testing and refinement.
+    """
+    try:
+        metric = Metric.objects.get(id=metric_id, share_key=share_key)
+    except Metric.DoesNotExist:
+        return HttpResponseForbidden()
+
+    phantomjs_script_path = os.path.join(os.path.split(phantomjs.__file__)[:-1])[0]
+    phantomjs_script = os.path.join(phantomjs_script_path, "screenshot_%s.js" % metric.widget.width)
+
+    data= render_to_string(
+        'holodeck/metric/share.html',
+        {
+            'metric': metric,
+            'STATIC_URL': settings.STATIC_ROOT + '/',
+        },
+        context_instance=RequestContext(request)
+    )
+    
+    data_file = NamedTemporaryFile(delete=False, suffix='.html')
+    data_file.write(data.encode('ascii', 'ignore'))
+    data_file.close()
+    
+    image_file = NamedTemporaryFile(delete=False, suffix='.png')
+    image_file.close()
+
+    params = ['phantomjs', phantomjs_script, data_file.name, image_file.name]
+    subprocess.call(params)
+
+    result_file = open(image_file.name, 'r')
+    result = result_file.read()
+    result_file.close()
+    
+    os.remove(image_file.name)
+    os.remove(data_file.name)
+    
+    return HttpResponse(result, mimetype="image/png")
 
 @login_required
 def remove_metric(request, metric_id):
