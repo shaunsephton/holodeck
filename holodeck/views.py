@@ -281,6 +281,7 @@ def share_metric(request, metric_id, share_key):
     """
     XXX: This needs a lot of testing and refinement.
     """
+    import holodeck
     try:
         metric = Metric.objects.get(id=metric_id, share_key=share_key)
     except Metric.DoesNotExist:
@@ -293,7 +294,7 @@ def share_metric(request, metric_id, share_key):
         'holodeck/metric/share.html',
         {
             'metric': metric,
-            'STATIC_URL': settings.STATIC_ROOT + '/',
+            'STATIC_URL': os.path.join(os.path.split(holodeck.__file__)[0], 'static/')
         },
         context_instance=RequestContext(request)
     )
