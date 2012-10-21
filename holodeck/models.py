@@ -42,6 +42,12 @@ class Metric(models.Model):
         blank=True,
         null=True
     )
+    share_key = models.CharField(
+        max_length=32,
+        unique=True,
+        blank=True,
+        null=True
+    )
     position = models.IntegerField(
         blank=True,
         null=True,
@@ -49,9 +55,13 @@ class Metric(models.Model):
 
     def __unicode__(self):
         return self.name
+    
+    @property
+    def widget(self):
+        return load_class_by_string(self.widget_type)()
 
-    def render(self, context):
-        return load_class_by_string(self.widget_type)().render(self, context)
+    def render(self, context, minimal=False):
+        return self.widget.render(self, context, minimal)
 
     def export(self, workbook):
         """
@@ -105,6 +115,8 @@ class Metric(models.Model):
     def save(self, *args, **kwargs):
         if not self.api_key:
             self.api_key = generate_key()
+        if not self.share_key:
+            self.share_key = generate_key()
         super(Metric, self).save(*args, **kwargs)
 
     class Meta:
