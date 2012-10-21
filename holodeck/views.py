@@ -20,6 +20,7 @@ from django.views.decorators.csrf import csrf_protect
 from holodeck import phantomjs
 from holodeck.models import Dashboard, Metric
 from holodeck.decorators import login_required, validate_share
+from holodeck.utils import get_widget_type_choices
 import xlwt
 
 
@@ -262,7 +263,20 @@ def manage_metric(request, metric_id):
         context_instance=RequestContext(request)
     )
 
+
+@login_required
+def type_change_metric(request, metric_id, type_id):
+    try:
+        metric = Metric.objects.get(id=metric_id)
+    except Metric.DoesNotExist:
+        return HttpResponseForbidden()
+
+    metric.widget_type = get_widget_type_choices()[int(type_id)][0]
+    metric.save()
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
     
+
 def share_metric(request, metric_id, share_key):
     """
     XXX: This needs a lot of testing and refinement.
