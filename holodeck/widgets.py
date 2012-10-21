@@ -15,6 +15,7 @@ class Widget(object):
                 metric.sample_set.filter(timestamp=latest[0].timestamp).values('string_value').distinct()]
 
     def render(self, metric, context, minimal):
+        from holodeck.utils import get_widget_type_choices
         context.update(self.get_context(metric))
         if minimal:
             template_name = "holodeck/widgets/base_minimal.html"
@@ -22,6 +23,7 @@ class Widget(object):
             template_name = "holodeck/widgets/base_full.html"
         context.update({
             'template_name': template_name,
+            'widget_types': get_widget_type_choices(),
         })
         return render_to_string(self.template_name, context)
 
