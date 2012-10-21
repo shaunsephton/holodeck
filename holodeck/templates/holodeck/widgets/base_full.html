@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<div class="widget span{{ width }}" id="metric_{{ metric.id }}">
+    <div class="widget-header">
+        {{ metric.name }}
+        {% if request.user.is_authenticated %}
+            <div class="btn-group pull-right">
+                <a class="btn btn-icon" title="Share" href="{% url holodeck-share-metric metric.id metric.share_key %}"><i class="icon-share"></i></a>
+                <a class="btn btn-icon" title="Edit" href="{% url holodeck-manage-metric metric.id %}"><i class="icon-pencil"></i></a>
+            </div>    
+        {% endif %}
+    </div>
+    <div class="widget-body">
+        {% if no_samples %}
+            <div class="alert alert-warning">{% blocktrans %}This metric does not currently have any samples.{% endblocktrans %}</div>
+        {% else %}
+            {% block widget %}{% endblock %}
+        {% endif %}
+    </div>
+</div>
