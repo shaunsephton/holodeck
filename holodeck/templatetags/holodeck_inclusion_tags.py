@@ -16,9 +16,9 @@ def dashboard_dropdown(context):
 
 
 @register.inclusion_tag('holodeck/inclusion_tags/render_metric.html', takes_context=True)
-def render_metric(context, metric):
+def render_metric(context, metric, minimal=False):
     context = copy(context)
-    return {'result': metric.render(context)}
+    return {'result': metric.render(context, minimal)}
 
 
 @register.inclusion_tag('holodeck/inclusion_tags/dashboard_list_summary.html')
