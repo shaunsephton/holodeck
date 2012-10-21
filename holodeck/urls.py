@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     # Metrics.
     url(r'^metrics/(?P<dashboard_id>\d+)/new/$', views.new_metric, name='holodeck-new-metric'),
     url(r'^metrics/(?P<metric_id>\d+)/edit/$', views.manage_metric, name='holodeck-manage-metric'),
+    url(r'^metrics/(?P<metric_id>\d+)/change/(?P<type_id>\d+)/$', views.type_change_metric, name='holodeck-type-change-metric'),
     url(r'^metrics/(?P<metric_id>\d+)/(?P<share_key>[\w-]+)/share.png$', views.share_metric, name='holodeck-share-metric'),
     url(r'^metrics/(?P<metric_id>\d+)/remove/$', views.remove_metric, name='holodeck-remove-metric'),
     url(r'^metrics/(?P<metric_id>\d+)/purge-samples/$', views.purge_metric_samples, name='holodeck-purge-metric-samples'),
