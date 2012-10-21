@@ -32,7 +32,7 @@ Once installed you should be able to execute the Holodeck CLI using ``holodeck``
 
 By default the CLI looks for a configuration file in the current working path called ``holodeck.conf.py``.
 
-*Optionally* add `PhantomJS <http://phantomjs.org/>_` to your path to enable widget image exporting/sharing.
+*Optionally* add `PhantomJS <http://phantomjs.org/>`_ to your path to enable widget image exporting/sharing.
 
 Configuration Initialization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
