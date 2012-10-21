@@ -1,15 +1,1 @@
-{% load i18n %}
-
-<div class="widget span{{ width }}" id="metric_{{ metric.id }}">
-    <div class="widget-header">
-        {{ metric.name }}
-        {% if request.user.is_authenticated %}<a class="action" href="{% url holodeck-manage-metric metric.id %}">Edit</a>{% endif %}
-    </div>
-    <div class="widget-body">
-        {% if no_samples %}
-            <div class="alert alert-warning">{% blocktrans %}This metric does not currently have any samples.{% endblocktrans %}</div>
-        {% else %}
-            {% block widget %}{% endblock %}
-        {% endif %}
-    </div>
-</div>
+{% extends template_name %}
