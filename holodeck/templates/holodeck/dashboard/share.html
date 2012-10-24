@@ -10,7 +10,7 @@
 
 {% block page_header %}
     <div class="btn-group pull-right">
-        <a class="btn btn-primary" title="Export {{ dashboard.name }}" href="{% url holodeck-export-shared-dashboard dashboard.pk dashboard.share_key %}"><i class="icon-file icon-white"></i></a>
+        <a class="btn btn-primary" title="Export" href="{% url holodeck-export-shared-dashboard dashboard.pk dashboard.share_key %}"><i class="icon-file icon-white"></i></a>
     </div>    
     {{ block.super }}
 {% endblock %}
