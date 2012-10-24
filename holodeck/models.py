@@ -31,6 +31,10 @@ class Dashboard(models.Model):
 
 class Metric(models.Model):
     name = models.CharField(max_length=255)
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
     dashboard = models.ForeignKey('holodeck.Dashboard')
     widget_type = models.CharField(
         max_length=64,
@@ -69,7 +73,7 @@ class Metric(models.Model):
         with samples for this metric.
         """
         samples = {}
-        worksheet = workbook.add_sheet(self.name)
+        worksheet = workbook.add_sheet(self.name[:31])
 
         samples = self.sample_set.all()
 
