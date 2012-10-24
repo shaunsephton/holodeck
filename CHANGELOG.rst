@@ -6,6 +6,8 @@ Next
 #. Allowed for widget of-site embeds via phantomjs image generator `#8 <https://github.com/shaunsephton/holodeck/issues/8>`_.
 #. Added dropdown to quickly change widget types (still need to ajaxify).
 #. Switched to button groups, pretty.
+#. Added tooltips buttons and metric titles, with metric title tooltip being metric description (new field added).
+#. Limit export sheet names to 31 characters as imposed by Excel `#5 https://github.com/shaunsephton/holodeck/issues/5`_.
 
 0.1.1 (2012-10-15)
 ------------------
