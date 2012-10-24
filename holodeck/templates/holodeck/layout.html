@@ -34,12 +34,13 @@
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/flotr2.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.animate-colors-min.js" %}"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/global.min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/bootstrap.min.js" %}"></script>
         <script type="text/javascript">
         Sentry.config({
             mediaUrl: '{{ STATIC_URL }}holodeck/',
             defaultImage: '{{ STATIC_URL }}holodeck/images/sentry.png',
             popupCss: '{{ STATIC_URL }}holodeck/styles/popup.css'
-        });
+            });
         </script>
 
         {% block meta %}
@@ -119,6 +120,9 @@
             $('.tip').tooltip();
             $('.nav-tabs .active a').tab('show')
         });
+
+        $("a[title]").tooltip({placement: "bottom"});
+        $(".widget-header span[title]").tooltip({placement: "right"});
         </script>
     </body>
 </html>
