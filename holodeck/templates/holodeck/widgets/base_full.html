@@ -2,7 +2,7 @@
 
 <div class="widget span{{ width }}" id="metric_{{ metric.id }}">
     <div class="widget-header">
-        {{ metric.name }}
+        <span title="{{ metric.description }}">{{ metric.name }}</span>
         {% if request.user.is_authenticated %}
             <div class="btn-group pull-right">
                 <a class="btn btn-icon" title="Share" href="{% url holodeck-share-metric metric.id metric.share_key %}"><i class="icon-share"></i></a>
