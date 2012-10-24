@@ -10,10 +10,10 @@
 
 {% block page_header %}
     <div class="btn-group pull-right">
-        <a class="btn" title="Export {{ dashboard.name }}" href="{% url holodeck-export-dashboard dashboard.id %}"><i class="icon-file"></i></a>
-        <a class="btn" title="Share {{ dashboard.name }}" href="{{ SITE_URL }}{% url holodeck-share-dashboard dashboard.id dashboard.share_key %}"><i class="icon-share"></i></a>
-        <a class="btn" title="Edit {{ dashboard.name }}" href="{% url holodeck-manage-dashboard dashboard.id %}"><i class="icon-pencil"></i></a>
-        <a class="btn btn-primary" title="Add New Metric" href="{% url holodeck-new-metric dashboard.id %}"><i class="icon-white icon-plus-sign"></i></a>
+        <a class="btn" title="Export" href="{% url holodeck-export-dashboard dashboard.id %}"><i class="icon-file"></i></a>
+        <a class="btn" title="Share" href="{{ SITE_URL }}{% url holodeck-share-dashboard dashboard.id dashboard.share_key %}"><i class="icon-share"></i></a>
+        <a class="btn" title="Edit" href="{% url holodeck-manage-dashboard dashboard.id %}"><i class="icon-pencil"></i></a>
+        <a class="btn btn-primary" title="Add Metric" href="{% url holodeck-new-metric dashboard.id %}"><i class="icon-white icon-plus-sign"></i></a>
     </div>    
     {{ block.super }}
 {% endblock %}
