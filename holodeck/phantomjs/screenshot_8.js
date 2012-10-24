@@ -12,7 +12,9 @@ page.open(input, function (status) {
         phantom.exit(1);
     }
     else {
-        page.render(output);
-        phantom.exit();
+        setTimeout(function() {
+            page.render(output);
+            phantom.exit();
+        }, 200);
     }
 });
