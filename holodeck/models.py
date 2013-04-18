@@ -31,6 +31,11 @@ class Dashboard(models.Model):
 
 class Metric(models.Model):
     name = models.CharField(max_length=255)
+    export_name = models.CharField(
+        max_length=31,
+        null=True,
+        blank=True,
+    )
     description = models.TextField(
         blank=True,
         null=True,
@@ -72,8 +77,21 @@ class Metric(models.Model):
         Given a xlwt Excel workbook creates a sheet and populates it
         with samples for this metric.
         """
-        samples = {}
-        worksheet = workbook.add_sheet(self.name[:31])
+
+        # Resolve naming conflicts by appending a counter to the sheet name
+        def add_sheet(counter, name):
+            try:
+                if counter:
+                    return workbook.add_sheet("%s %d" % (name[:31 - len(str(counter)) - 1], counter + 1))
+                return workbook.add_sheet(name[:31])
+            except Exception as e:
+                # xlwt doesn't raise a subclass of Exception
+                if e.message.startswith('duplicate worksheet name'):
+                    return add_sheet(counter + 1, name)
+                raise e
+
+        # Use export_name instead of name if it exists
+        worksheet = add_sheet(0, self.export_name if self.export_name else self.name)
 
         samples = self.sample_set.all()
 
