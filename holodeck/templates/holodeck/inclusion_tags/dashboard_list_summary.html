@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load url from future %}
 
 <li class="event" data-count="{{ group.times_seen|safe }}" data-score="{{ group.sort_value|safe }}" data-group="{{ group.id|safe }}">
 <div class="count {{ previous.color }}"><span>{% if metric %}{{ previous.percentage }}%{% else %} NA {% endif %}</span></div>

@@ -1,6 +1,7 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n %}
+{% load url from future %}
 
 {% block title %}{% blocktrans with metric.name as name %}Manage Metric: {{ name }}{% endblocktrans %} | {{ block.super }}{% endblock %}
 
