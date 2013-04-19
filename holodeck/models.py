@@ -31,6 +31,11 @@ class Dashboard(models.Model):
 
 class Metric(models.Model):
     name = models.CharField(max_length=255)
+    export_name = models.CharField(
+        max_length=31,
+        null=True,
+        blank=True,
+    )
     description = models.TextField(
         blank=True,
         null=True,
@@ -67,13 +72,25 @@ class Metric(models.Model):
     def render(self, context, minimal=False):
         return self.widget.render(self, context, minimal)
 
-    def export(self, workbook):
+    def export(self, workbook, sheet_names):
         """
         Given a xlwt Excel workbook creates a sheet and populates it
         with samples for this metric.
         """
-        samples = {}
-        worksheet = workbook.add_sheet(self.name[:31])
+
+        # Resolve naming conflicts by appending a counter to the sheet name
+        def add_sheet(name):
+            counter = 1
+            suffix = ""
+            while True:
+                new_name = "%s%s" % (name[:31 - len(suffix)], suffix)
+                if new_name not in sheet_names:
+                    return workbook.add_sheet(new_name)
+                counter += 1
+                suffix = " %d" % counter
+
+        # Use export_name instead of name if it exists
+        worksheet = add_sheet(self.export_name if self.export_name else self.name)
 
         samples = self.sample_set.all()
 
@@ -115,6 +132,8 @@ class Metric(models.Model):
                     pass
                 else:
                     raise e
+
+        return worksheet
 
     def save(self, *args, **kwargs):
         if not self.api_key:

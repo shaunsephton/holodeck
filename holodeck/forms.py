@@ -37,5 +37,5 @@ class NewMetricForm(forms.ModelForm):
 
 class ManageMetricForm(NewMetricForm):
     class Meta:
-        fields = ('name', 'description', 'dashboard', 'widget_type', )
+        fields = ('name', 'description', 'dashboard', 'widget_type', 'export_name', )
         model = Metric
