@@ -126,9 +126,10 @@ def _export_dashboard(request, dashboard_id):
 
     stream = StringIO()
     workbook = xlwt.Workbook()
-
+    sheet_names = set()
     for metric in dashboard.metric_set.all():
-        metric.export(workbook)
+        worksheet = metric.export(workbook, sheet_names)
+        sheet_names.add(worksheet.name)
 
     workbook.save(stream)
 

@@ -72,26 +72,25 @@ class Metric(models.Model):
     def render(self, context, minimal=False):
         return self.widget.render(self, context, minimal)
 
-    def export(self, workbook):
+    def export(self, workbook, sheet_names):
         """
         Given a xlwt Excel workbook creates a sheet and populates it
         with samples for this metric.
         """
 
         # Resolve naming conflicts by appending a counter to the sheet name
-        def add_sheet(counter, name):
-            try:
-                if counter:
-                    return workbook.add_sheet("%s %d" % (name[:31 - len(str(counter)) - 1], counter + 1))
-                return workbook.add_sheet(name[:31])
-            except Exception as e:
-                # xlwt doesn't raise a subclass of Exception
-                if e.message.startswith('duplicate worksheet name'):
-                    return add_sheet(counter + 1, name)
-                raise e
+        def add_sheet(name):
+            counter = 1
+            suffix = ""
+            while True:
+                new_name = "%s%s" % (name[:31 - len(suffix)], suffix)
+                if new_name not in sheet_names:
+                    return workbook.add_sheet(new_name)
+                counter += 1
+                suffix = " %d" % counter
 
         # Use export_name instead of name if it exists
-        worksheet = add_sheet(0, self.export_name if self.export_name else self.name)
+        worksheet = add_sheet(self.export_name if self.export_name else self.name)
 
         samples = self.sample_set.all()
 
@@ -133,6 +132,8 @@ class Metric(models.Model):
                     pass
                 else:
                     raise e
+
+        return worksheet
 
     def save(self, *args, **kwargs):
         if not self.api_key:
