@@ -36,7 +36,7 @@
                 relative: true,
                 position: "n",
                 sensibility: 10,
-                trackFormatter: function(obj){ dt = Date(obj.x); return dt.slice(0,21)  + ' - ' + obj.y; }
+                trackFormatter: function(obj){ dt = new Date(obj.x); return dt.slice(0,21)  + ' - ' + obj.y; }
             },
             colors: ["#058dc7", "#f36a67", "#90c7a0", "#eba44c", "#fedd74"],
             yaxis: {
