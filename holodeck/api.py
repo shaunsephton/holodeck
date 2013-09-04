@@ -7,6 +7,19 @@ from django.views.decorators.csrf import csrf_exempt
 from holodeck.models import Metric, Sample
 
 
+def decode_b64_zlib(payload):
+    return decode_json(base64.b64decode(payload).decode('zlib'))
+
+def decode_json(payload):
+    return json.loads(payload)
+
+DECODE_MAP = {
+    'application/octet-stream': decode_b64_zlib,
+    'application/json': decode_json,
+}
+
+DEFAULT_DECODER = decode_b64_zlib
+
 @csrf_exempt
 def store(request):
     """
@@ -14,8 +27,12 @@ def store(request):
     TODO: Needs a lot of work, security, validation etc.
     """
     if request.method == 'POST':
-        data = request.raw_post_data
-        data = json.loads(base64.b64decode(data).decode('zlib'))
+
+        content_type = request.META['CONTENT_TYPE']
+        decoder = DECODE_MAP.get(content_type, DEFAULT_DECODER)
+
+        raw_data = request.raw_post_data
+        data = decoder(raw_data)
 
         # Get the Metric for provided api_key, otherwise fail with Forbidden.
         try:
