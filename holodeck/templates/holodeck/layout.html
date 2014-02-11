@@ -12,7 +12,7 @@
         <title>{% block title %}Holodeck{% endblock %}</title>
 
         {% if USE_JS_CLIENT %}
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/client.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/client.js"></script>
         <script type="text/javascript">
         Sentry.client.config({
             server: '{% url sentry-api-store %}',
@@ -25,16 +25,16 @@
         <!--[if lt IE 9]>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/html5shiv.js"></script>
         <![endif]-->
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/bootstrap.min.js" %}"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.js" %}"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.clippy.min.js" %}"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.flot.min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.ui.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.clippy.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.animate-colors-min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.flot.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/raphael.2.1.0.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/justgage.1.0.1.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/flotr2.min.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/jquery.animate-colors-min.js" %}"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/global.min.js" %}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/global.min.js"></script>
         <script type="text/javascript">
         Sentry.config({
             mediaUrl: '{{ STATIC_URL }}holodeck/',
