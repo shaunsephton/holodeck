@@ -1,13 +1,14 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n %}
+{% load url from future %}
 
 {% block title %}{% trans "New Metric" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-<li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
+<li><a href="{% url "holodeck-view-dashboard" dashboard.pk %}">{{ dashboard.name }}</a></li>
     <li class="divider">/</li>
-    <li><a href="{% url holodeck-new-metric dashboard.pk %}">{% trans "New Metric" %}</a></li>
+    <li><a href="{% url "holodeck-new-metric" dashboard.pk %}">{% trans "New Metric" %}</a></li>
 {% endblock %}
 
 {% block main %}

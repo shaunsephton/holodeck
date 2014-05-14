@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load url from future %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +16,7 @@
         <script type="text/javascript" src="{{ STATIC_URL }}holodeck/scripts/client.js"></script>
         <script type="text/javascript">
         Sentry.client.config({
-            server: '{% url sentry-api-store %}',
+            server: '{% url "sentry-api-store" %}',
             logger: 'sentry.errors.javascript'
         })
         Sentry.client.registerGlobalHandler();
@@ -56,10 +57,10 @@
             {% block page_header %}
                 <ul class="breadcrumb">
                     {% comment %}
-                    <li><a href="{% url holodeck %}">{% trans "Dashboard" %}</a></li>
+                    <li><a href="{% url "holodeck" %}">{% trans "Dashboard" %}</a></li>
                     {% if project %}
                         <li class="divider">/</li>
-                        <li><a href="{% url sentry project.slug %}">{{ project.name }}</a> <a class="action" href="{% url sentry-manage-project project.slug %}">Edit</a></li>
+                        <li><a href="{% url "sentry" project.slug %}">{{ project.name }}</a> <a class="action" href="{% url "sentry-manage-project" project.slug %}">Edit</a></li>
                     {% endif %}
                     {% endcomment %}
                     {% block breadcrumb %}

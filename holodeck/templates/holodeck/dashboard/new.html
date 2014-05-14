@@ -1,11 +1,12 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n %}
+{% load url from future %}
 
 {% block title %}{% trans "New Dashboard" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url holodeck-new-dashboard %}">{% trans "New Dashboard" %}</a></li>
+    <li><a href="{% url "holodeck-new-dashboard" %}">{% trans "New Dashboard" %}</a></li>
 {% endblock %}
 
 {% block main %}

@@ -1,16 +1,17 @@
 {% load i18n %}
+{% load url from future %}
 
 <div class="widget span{{ width }}" id="metric_{{ metric.id }}">
     <div class="widget-header">
         <span{% if metric.description %} title="{{ metric.description }}"{% endif %}>{{ metric.name }}</span>
         {% if request.user.is_authenticated %}
             <div class="btn-group pull-right">
-                <a class="btn btn-icon" title="Share" href="{% url holodeck-share-metric metric.id metric.share_key %}"><i class="icon-share"></i></a>
-                <a class="btn btn-icon" title="Edit" href="{% url holodeck-manage-metric metric.id %}"><i class="icon-pencil"></i></a>
+                <a class="btn btn-icon" title="Share" href="{% url "holodeck-share-metric" metric.id metric.share_key %}"><i class="icon-share"></i></a>
+                <a class="btn btn-icon" title="Edit" href="{% url "holodeck-manage-metric" metric.id %}"><i class="icon-pencil"></i></a>
                 <a class="btn btn-icon btn-primary dropdown-toggle" title="Switch Type" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for widget_type in widget_types %}
-                        <li><a href="{% url holodeck-type-change-metric metric.id forloop.counter0 %}">{{ widget_type.1 }}</a></li>
+                        <li><a href="{% url "holodeck-type-change-metric" metric.id forloop.counter0 %}">{{ widget_type.1 }}</a></li>
                     {% endfor %}
                 </ul>
             </div>    

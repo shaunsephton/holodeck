@@ -1,17 +1,18 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n %}
+{% load url from future %}
 
 {% block title %}{% blocktrans with metric.name as name %}Manage Metric: {{ name }}{% endblocktrans %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-<li><a href="{% url holodeck-view-dashboard dashboard.pk %}">{{ dashboard.name }}</a></li>
+<li><a href="{% url "holodeck-view-dashboard" dashboard.pk %}">{{ dashboard.name }}</a></li>
     <li class="divider">/</li>
-    <li><a href="{% url holodeck-manage-metric metric.id %}">{{ metric.name }}</a></li>
+    <li><a href="{% url "holodeck-manage-metric" metric.id %}">{{ metric.name }}</a></li>
 {% endblock %}
 
 {% block page_header %}
-    <a href="{% url holodeck-new-metric dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
+    <a href="{% url "holodeck-new-metric" dashboard.pk %}" class="btn pull-right btn-primary">{% trans "Create a new metric" %}</a>
     {{ block.super }}
 {% endblock %}
 
@@ -49,8 +50,8 @@
                 </fieldset>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
-                    <a href="{% url holodeck-remove-metric metric.id %}" class="btn btn-danger">{% trans "Remove Metric" %}</a>
-                    <a href="{% url holodeck-purge-metric-samples metric.id %}" class="btn btn-danger">{% trans "Purge Samples" %}</a>
+                    <a href="{% url "holodeck-remove-metric" metric.id %}" class="btn btn-danger">{% trans "Remove Metric" %}</a>
+                    <a href="{% url "holodeck-purge-metric-samples" metric.id %}" class="btn btn-danger">{% trans "Purge Samples" %}</a>
                 </div>
             </form>
         {% endblock %}

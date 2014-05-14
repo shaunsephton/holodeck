@@ -10,7 +10,7 @@ setup(
     url='http://github.com/shaunsephton/holodeck',
     packages = find_packages(),
     install_requires = [
-        'django',
+        'django>=1.3',
         'logan',
         'south',
         'xlwt',

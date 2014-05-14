@@ -1,10 +1,11 @@
 {% load i18n %}
+{% load url from future %}
 
 <li class="event" data-count="{{ group.times_seen|safe }}" data-score="{{ group.sort_value|safe }}" data-group="{{ group.id|safe }}">
 <div class="count {{ previous.color }}"><span>{% if metric %}{{ previous.percentage }}%{% else %} NA {% endif %}</span></div>
     <div class="details">
         <h3>
-            <a href="{% url holodeck-view-dashboard dashboard.id %}">{{ dashboard.name }}</a>
+            <a href="{% url "holodeck-view-dashboard" dashboard.id %}">{{ dashboard.name }}</a>
         </h3>
         <p class="message" title="{{ group.message }}">
             {{ metric.name }}
@@ -14,7 +15,7 @@
         {% if metric %}
             <span class="loading">{% trans "Loading data..." %}</span>
         {% else %}
-            {% url holodeck-new-metric dashboard.pk as link %}
+            {% url "holodeck-new-metric" dashboard.pk as link %}
             <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
         {% endif %}
     </div>

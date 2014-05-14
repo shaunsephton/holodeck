@@ -1,16 +1,17 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n holodeck_inclusion_tags %}
+{% load url from future %}
 
 {% block title %}{{ dashboard.name }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url holodeck-share-dashboard dashboard.pk dashboard.share_key %}">{{ dashboard.name }}</a></li>
+    <li><a href="{% url "holodeck-share-dashboard" dashboard.pk dashboard.share_key %}">{{ dashboard.name }}</a></li>
 {% endblock %}
 
 {% block page_header %}
     <div class="btn-group pull-right">
-        <a class="btn btn-primary" title="Export" href="{% url holodeck-export-shared-dashboard dashboard.pk dashboard.share_key %}"><i class="icon-file icon-white"></i></a>
+        <a class="btn btn-primary" title="Export" href="{% url "holodeck-export-shared-dashboard" dashboard.pk dashboard.share_key %}"><i class="icon-file icon-white"></i></a>
     </div>    
     {{ block.super }}
 {% endblock %}
@@ -18,7 +19,7 @@
 {% block main %}
     <section class="body">
         {% if not metrics %}
-            {% url holodeck-new-metric dashboard.pk as link %}
+            {% url "holodeck-new-metric" dashboard.pk as link %}
             <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
         {% else %}
             {% for metric in metrics %}

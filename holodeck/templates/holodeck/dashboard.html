@@ -1,15 +1,16 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n holodeck_inclusion_tags %}
+{% load url from future %}
 
 {% block title %}{% trans "Dashboard Overview" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url holodeck %}">{% trans "Dashboard Overview" %}</a></li>
+    <li><a href="{% url "holodeck" %}">{% trans "Dashboard Overview" %}</a></li>
 {% endblock %}
 
 {% block page_header %}
-    <a href="{% url holodeck-new-dashboard %}" class="btn pull-right btn-primary">{% trans "Create a new dashboard" %}</a>
+    <a href="{% url "holodeck-new-dashboard" %}" class="btn pull-right btn-primary">{% trans "Create a new dashboard" %}</a>
     {{ block.super }}
 {% endblock %}
 
@@ -24,7 +25,7 @@
         <ul class="events" id="event_list">
             <li class="empty-result" id="no_messages">
                 <div class="alert alert-block alert-notice">
-                    {% url holodeck-new-dashboard as link %}
+                    {% url "holodeck-new-dashboard" as link %}
                     <p>{% blocktrans %}This Holodeck does not contain any dashboards. Would you like to <a href="{{ link }}">create a new dashboard now</a>?{% endblocktrans %}</p>
                 </div>
             </li>

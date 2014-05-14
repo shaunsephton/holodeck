@@ -1,19 +1,20 @@
 {% extends "holodeck/layout.html" %}
 
 {% load i18n holodeck_inclusion_tags %}
+{% load url from future %}
 
 {% block title %}{{ dashboard.name }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url holodeck-view-dashboard dashboard.id %}">{{ dashboard.name }}</a></li>
+    <li><a href="{% url "holodeck-view-dashboard" dashboard.id %}">{{ dashboard.name }}</a></li>
 {% endblock %}
 
 {% block page_header %}
     <div class="btn-group pull-right">
-        <a class="btn" title="Export" href="{% url holodeck-export-dashboard dashboard.id %}"><i class="icon-file"></i></a>
-        <a class="btn" title="Share" href="{{ SITE_URL }}{% url holodeck-share-dashboard dashboard.id dashboard.share_key %}"><i class="icon-share"></i></a>
-        <a class="btn" title="Edit" href="{% url holodeck-manage-dashboard dashboard.id %}"><i class="icon-pencil"></i></a>
-        <a class="btn btn-primary" title="Add Metric" href="{% url holodeck-new-metric dashboard.id %}"><i class="icon-white icon-plus-sign"></i></a>
+        <a class="btn" title="Export" href="{% url "holodeck-export-dashboard" dashboard.id %}"><i class="icon-file"></i></a>
+        <a class="btn" title="Share" href="{{ SITE_URL }}{% url "holodeck-share-dashboard" dashboard.id dashboard.share_key %}"><i class="icon-share"></i></a>
+        <a class="btn" title="Edit" href="{% url "holodeck-manage-dashboard" dashboard.id %}"><i class="icon-pencil"></i></a>
+        <a class="btn btn-primary" title="Add Metric" href="{% url "holodeck-new-metric" dashboard.id %}"><i class="icon-white icon-plus-sign"></i></a>
     </div>    
     {{ block.super }}
 {% endblock %}
@@ -21,7 +22,7 @@
 {% block main %}
     <section class="body" id="sortable">
         {% if not metrics %}
-            {% url holodeck-new-metric dashboard.id as link %}
+            {% url "holodeck-new-metric" dashboard.id as link %}
             <div class="alert alert-info">{% blocktrans %}This dashboard does not currently have any metrics. Would you like to <a href="{{ link }}">create a new metric now</a>?{% endblocktrans %}</div>
         {% else %}
             {% for metric in metrics %}
@@ -41,7 +42,7 @@
                 },
                 update: function(event, ui) {
                     var order = $(this).sortable("toArray").toString();
-                    $.get("{% url holodeck-sort-dashboard dashboard.id %}", {order: order});
+                    $.get("{% url "holodeck-sort-dashboard" dashboard.id %}", {order: order});
                 }
 		    });
     		$("#sortable").disableSelection();
